@@ -127,7 +127,7 @@ export function spacedNumber(x) {
 
 
 export default class ApiService {
-    _apiBaseUrl = 'http://api:8000/api/'
+    _apiBaseUrl = 'http://api:80/api/'
     _vkTokenUrl = `https://oauth.vk.com/authorize?client_id=7669131&display=page&redirect_uri=${this._apiBaseUrl}users.bindVk&scope=360448&response_type=code&v=5.126`
 
     async _getResponse(method, params) {
