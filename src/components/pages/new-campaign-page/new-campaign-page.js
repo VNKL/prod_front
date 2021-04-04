@@ -6,6 +6,7 @@ import ApiService from "../../../services/api-service";
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import NewCampaignHelpBlock from "./new-campaign-help-block";
+import NoPermissionsBackdrop from "../../no-permissions-backdrop";
 
 
 function BalanceAlert(props) {
@@ -17,6 +18,7 @@ export default class NewCampaignPage extends React.Component {
     api = new ApiService()
     state = {
         loading: true,
+        hasToken: false,
         cabinets: null,
         hasCabinets: false,
         hasGroups: false,
@@ -26,11 +28,13 @@ export default class NewCampaignPage extends React.Component {
     }
 
     componentDidMount() {
-        this.getCabsAndGroups()
+        this.checkToken()
     }
 
     getCabsAndGroups = () => {
-        this.api.getCabsAndGroups().then(this.onCabsAndGroupLoaded)
+        if (this.state.hasToken) {
+            this.api.getCabsAndGroups().then(this.onCabsAndGroupLoaded)
+        }
     }
 
     onCabsAndGroupLoaded = (cabsAndGroups) => {
@@ -41,6 +45,17 @@ export default class NewCampaignPage extends React.Component {
                 hasCabinets: true,
                 hasGroups: true
             })
+        }
+    }
+
+    checkToken = () => {
+        this.api.getUser().then(this.onTokenLoaded)
+    }
+
+    onTokenLoaded = (user) => {
+        this.setState({loading: false})
+        if (typeof user !== 'undefined') {
+            this.setState({hasToken: user.hasToken}, () => {this.getCabsAndGroups()})
         }
     }
 
@@ -86,13 +101,13 @@ export default class NewCampaignPage extends React.Component {
 
 
     render() {
-        const {hasCabinets, hasGroups, cabinets, groups} = this.state
+        const {hasCabinets, hasGroups, hasToken, cabinets, groups, loading} = this.state
 
         const form = hasCabinets && hasGroups ? <NewCampaignForm cabinets={cabinets}
                                                                  groups={groups}
                                                                  startCampaign={this.startCampaign} /> : null
         const spinner = hasCabinets && hasGroups ? null : <NewCampaignFormSkeleton />
-        const error = hasCabinets && hasGroups ? null : spinner ? null : <h2>Недостаточно информации от тебе.</h2>
+        const tokenError = !hasToken && !loading ? <NoPermissionsBackdrop text="Ты еще не привязал свой ВК-аккаунт" /> : null
 
 
         return (
@@ -102,7 +117,7 @@ export default class NewCampaignPage extends React.Component {
                     <Grid item xs>
                         {form}
                         {spinner}
-                        {error}
+                        {tokenError}
                     </Grid>
                     <Grid item xs>
                         <NewCampaignHelpBlock />

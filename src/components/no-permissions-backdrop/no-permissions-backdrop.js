@@ -1,9 +1,9 @@
 import React from 'react';
 import Backdrop from '@material-ui/core/Backdrop';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import {Link as RouterLink} from "react-router-dom";
+import MuiAlert from "@material-ui/lab/Alert";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,7 +27,9 @@ const NoPermissionsBackdrop = (props) => {
     return (
         <Link component={RouterLink} to={`/`} underline='none' >
             <Backdrop className={classes.backdrop} open={open} onClick={handleClose}>
-                <Typography variant='h5'> {text} </Typography>
+                <MuiAlert elevation={6} variant="filled" severity="error" >
+                    {text}
+                </MuiAlert>
             </Backdrop>
         </Link>
     );

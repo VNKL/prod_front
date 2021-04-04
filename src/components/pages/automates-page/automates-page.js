@@ -49,8 +49,9 @@ const UserCanAutomatesPage = () => {
 export default class AutomatesPage extends React.Component {
 
     state = {
-        canAds: undefined,
+        canAds: false,
         loading: true,
+        hasToken: false
     }
     api = new ApiService()
     noPermissionsText = 'У тебя нет прав на использование модулей таргета'
@@ -60,17 +61,25 @@ export default class AutomatesPage extends React.Component {
     }
 
     onUserLoaded = (user) => {
-        this.setState({canAds: user.canAds, loading: false})
+        if (typeof user !== 'undefined') {
+            this.setState({hasToken: user.hasToken, loading: false}, () => {
+                if (this.state.hasToken) {
+                    this.setState({canAds: user.canAds})
+                }
+            })
+        }
     }
 
     render() {
-        const {loading, canAds} = this.state
-        const page = canAds ? UserCanAutomatesPage() : <NoPermissionsBackdrop text={this.noPermissionsText}/>
+        const {loading, canAds, hasToken} = this.state
+        const tokenError = !hasToken && !loading ? <NoPermissionsBackdrop text="Ты еще не привязал свой ВК-аккаунт" /> : null
+        const page = canAds ? UserCanAutomatesPage() : tokenError ? null : <NoPermissionsBackdrop text={this.noPermissionsText} />
         const spinner = loading ? <Spinner/> : null
         return (
             <div>
                 {spinner}
                 {page}
+                {tokenError}
             </div>
         )
     }

@@ -6,6 +6,7 @@ import ApiService from "../../../services/api-service";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import NewAutomateFormSkeleton from "./new-automate-form-skeleton";
+import NoPermissionsBackdrop from "../../no-permissions-backdrop";
 
 
 function BalanceAlert(props) {
@@ -17,21 +18,34 @@ class NewAutomatePage extends React.Component {
 
     state = {
         loading: true,
+        hasToken: false,
         campaigns: null,
         hasData: false,
         balanceError: false,
         automateIsStarting: false,
         automateSettings: undefined
     }
-
     api = new ApiService()
 
     componentDidMount() {
-        this.getCampaigns()
+        this.checkToken()
+    }
+
+    checkToken = () => {
+        this.api.getUser().then(this.onTokenLoaded)
+    }
+
+    onTokenLoaded = (user) => {
+        this.setState({loading: false})
+        if (typeof user !== 'undefined') {
+            this.setState({hasToken: user.hasToken}, () => {this.getCampaigns()})
+        }
     }
 
     getCampaigns = () => {
-        this.api.getCampaigns().then(this.onCampaignsLoaded)
+        if (this.state.hasToken) {
+            this.api.getCampaigns().then(this.onCampaignsLoaded)
+        }
     }
 
     getUser = () => {
@@ -83,11 +97,12 @@ class NewAutomatePage extends React.Component {
 
     render() {
 
-        const {loading, hasData, campaigns} = this.state
+        const {loading, hasData, hasToken, campaigns} = this.state
 
         const form = hasData ? <NewAutomateForm campaigns={campaigns} startAutomate={this.startAutomate}/> : null
         const spinner = loading ? <NewAutomateFormSkeleton /> : null
         const error = hasData ? null : spinner ? null : <h2>У тебя еще нет созданных кампаний</h2>
+        const tokenError = !hasToken && !loading ? <NoPermissionsBackdrop text="Ты еще не привязал свой ВК-аккаунт" /> : null
 
         return (
             <React.Fragment>
@@ -97,6 +112,7 @@ class NewAutomatePage extends React.Component {
                         { spinner }
                         { form }
                         { error }
+                        { tokenError }
                     </Grid>
                     <Grid item xs>
                         <NewAutomateHelpBlock />
