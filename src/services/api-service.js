@@ -140,8 +140,6 @@ export default class ApiService {
         })
         if (response.ok) {
             return await response.json()
-        } else {
-            console.log(response.json())
         }
     }
 
