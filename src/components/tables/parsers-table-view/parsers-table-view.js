@@ -118,7 +118,6 @@ export default function ParsersTableView(props) {
     };
 
     const parsingResultCell = (id, path) => {
-        console.log(typeof path)
         if (path !== null) {
             return (
                 <Tooltip title='Скачать результат парсинга'>
