@@ -72,7 +72,7 @@ export default class CampaignsPage extends React.Component {
     render() {
         const {loading, canAds, hasToken} = this.state
         const tokenError = !hasToken && !loading ? <NoPermissionsBackdrop text="Ты еще не привязал свой ВК-аккаунт" /> : null
-        const page = canAds ? UserCanAdsPage() : tokenError ? null : <NoPermissionsBackdrop text={this.noPermissionsText} />
+        const page = canAds && !loading ? UserCanAdsPage() : tokenError ? null : <NoPermissionsBackdrop text={this.noPermissionsText} />
         const spinner = loading ? <Spinner /> : null
 
 

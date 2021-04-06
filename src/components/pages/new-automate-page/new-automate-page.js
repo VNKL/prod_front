@@ -101,7 +101,7 @@ class NewAutomatePage extends React.Component {
 
         const form = hasData ? <NewAutomateForm campaigns={campaigns} startAutomate={this.startAutomate}/> : null
         const spinner = loading ? <NewAutomateFormSkeleton /> : null
-        const error = hasData ? null : spinner ? null : <h2>У тебя еще нет созданных кампаний</h2>
+        const error = hasData && !loading ? null : spinner ? null : <h2>У тебя еще нет созданных кампаний</h2>
         const tokenError = !hasToken && !loading ? <NoPermissionsBackdrop text="Ты еще не привязал свой ВК-аккаунт" /> : null
 
         return (
