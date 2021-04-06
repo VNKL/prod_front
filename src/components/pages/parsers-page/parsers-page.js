@@ -51,12 +51,14 @@ export default class ParsersPage extends React.Component {
 
     render() {
         const {loading, canParsers} = this.state
-        const page = canParsers && !loading ? UserCanParserPage() : <NoPermissionsBackdrop text={this.noPermissionsText} />
+        const page = canParsers && !loading ? UserCanParserPage() : null
+        const permError = !loading && !canParsers ? <NoPermissionsBackdrop text={this.noPermissionsText} /> : null
         const spinner = loading ? <Spinner /> : null
         return (
             <div>
                 {spinner}
                 {page}
+                {permError}
             </div>
         )
     }

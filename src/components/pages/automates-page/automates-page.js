@@ -73,12 +73,14 @@ export default class AutomatesPage extends React.Component {
     render() {
         const {loading, canAds, hasToken} = this.state
         const tokenError = !hasToken && !loading ? <NoPermissionsBackdrop text="Ты еще не привязал свой ВК-аккаунт" /> : null
-        const page = canAds && !loading ? UserCanAutomatesPage() : tokenError ? null : <NoPermissionsBackdrop text={this.noPermissionsText} />
+        const page = canAds && !loading ? UserCanAutomatesPage() : null
+        const permError = !loading && !canAds ? <NoPermissionsBackdrop text={this.noPermissionsText} /> : null
         const spinner = loading ? <Spinner/> : null
         return (
             <div>
                 {spinner}
                 {page}
+                {permError}
                 {tokenError}
             </div>
         )
