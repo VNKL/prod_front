@@ -68,7 +68,7 @@ export default function AudiosTableView(props) {
     const [dense, setDense] = React.useState(true);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-    const { rows, needChart, needPost, handleDownload, hasCsv } = props
+    const { rows, needChart, needPost, handleDownload, handleDelete, hasCsv } = props
 
     const headCells = getHeadCells(needChart, needPost)
 
@@ -190,11 +190,22 @@ export default function AudiosTableView(props) {
                 </Grid>
 
                 <Grid item align='right' xs={6}>
-                    { hasCsv ? <Button variant='contained'
-                                       color='secondary'
-                                       onClick={handleDownload} > Выгрузить таблицей </Button> : null }
+                    <Grid container spacing={1}>
+                        <Grid item xs={9} />
+                        <Grid item align='right' xs={3}>
+                            { hasCsv ? <Button variant='contained'
+                                               color='secondary'
+                                               fullWidth
+                                               onClick={handleDownload} > Выгрузить таблицей </Button> : null }
+                        </Grid>
+                        <Grid item xs={9} />
+                        <Grid item align='right'  xs={3}>
+                            <Button fullWidth variant='contained' color='inherit' onClick={handleDelete} >
+                                Удалить парсер
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </Grid>
-
             </Grid>
         </div>
     );

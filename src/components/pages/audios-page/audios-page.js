@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import ApiService from "../../../services/api-service";
 import AudiosTableView from "../../tables/audios-table-view";
 import AudiosPageSkeleton from "./audios-page-skeleton";
+import { Redirect } from 'react-router-dom'
 
 
 export default class AudiosPage extends React.Component {
@@ -16,7 +17,8 @@ export default class AudiosPage extends React.Component {
         needPost: false,
         fromNewReleases: false,
         hasData: false,
-        hasCsv: false
+        hasCsv: false,
+        doRedirect: false,
     }
     api = new ApiService()
 
@@ -62,6 +64,10 @@ export default class AudiosPage extends React.Component {
         }
     }
 
+    handleDelete = () => {
+        this.api.deleteParser(this.parserId).then(() => {this.setState({doRedirect: true})})
+    }
+
     render() {
 
         const {loading, hasData, audios, needChart, needPost, hasCsv } = this.state
@@ -69,6 +75,7 @@ export default class AudiosPage extends React.Component {
                                                  needChart={needChart}
                                                  needPost={needPost}
                                                  handleDownload={this.handleDownload}
+                                                 handleDelete={this.handleDelete}
                                                  hasCsv={hasCsv} /> : null
         const skeleton = loading ? <AudiosPageSkeleton /> : null
         const error = hasData ? null : skeleton ? null : <h2>Ошибка с получением данных</h2>
@@ -77,6 +84,7 @@ export default class AudiosPage extends React.Component {
             <Grid container spacing={3} alignItems='center'>
 
                 <Grid item xs={12}>
+                    { this.state.doRedirect && <Redirect to="/parsers" /> }
                     {skeleton}
                 </Grid>
 
