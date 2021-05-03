@@ -14,7 +14,7 @@ const parsers = [
     {methodName: 'Исполнитель', methodApi: 'artist_url'},
     {methodName: 'Трек', methodApi: 'track_name'},
     {methodName: 'Аудиозаписи сообщества', methodApi: 'group'},
-    {methodName: 'Аудиозаписи плейлиста', methodApi: 'playlist_url'},
+    {methodName: 'Аудиозаписи плейлиста', methodApi: 'playlist'},
     {methodName: 'Аудиозаписи поста', methodApi: 'post'},
     {methodName: 'Поиск но повостям', methodApi: 'newsfeed'},
     {methodName: 'Чарт ВК', methodApi: 'chart'},
