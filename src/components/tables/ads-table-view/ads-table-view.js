@@ -158,10 +158,11 @@ export default function AdsTableView(props) {
                                         <TableRow
                                             hover
                                             key={index}
+                                            selected={row.name === '*** КАМПАНИЯ В ЦЕЛОМ ***'}
                                         >
                                             <TableCell align="left">{row.name}</TableCell>
-                                            { approvedIcons[row.approved] }
-                                            { statusIcons[row.status] }
+                                            { row.approved ? approvedIcons[row.approved] : <TableCell /> }
+                                            { row.status ? statusIcons[row.status] : <TableCell /> }
                                             <TableCell align="right">{spacedNumber(row.spent)}</TableCell>
                                             <TableCell align="right">{spacedNumber(row.reach)}</TableCell>
                                             <TableCell align="right">{row.cpm}</TableCell>
@@ -173,17 +174,21 @@ export default function AdsTableView(props) {
                                             <TableCell align="right">{`${row.str} %`}</TableCell>
                                             <TableCell align="right">{spacedNumber(row.audienceCount)}</TableCell>
 
-                                            <Tooltip title='Открыть объявление в ВК'>
-                                                <TableCell align="right" onClick={() => {handleClick(row.adUrl)}}>
-                                                    <LinkIcon color='secondary' style={{cursor: 'pointer'}}/>
-                                                </TableCell>
-                                            </Tooltip>
+                                            {
+                                                row.adUrl ? <Tooltip title='Открыть объявление в ВК'>
+                                                                <TableCell align="right" onClick={() => {handleClick(row.adUrl)}}>
+                                                                    <LinkIcon color='secondary' style={{cursor: 'pointer'}}/>
+                                                                </TableCell>
+                                                            </Tooltip> : <TableCell />
+                                            }
 
-                                            <Tooltip title='Открыть пост в ВК'>
-                                                <TableCell align="right" onClick={() => {handleClick(row.postUrl)}} >
-                                                    <LinkIcon color='secondary' style={{cursor: 'pointer'}}/>
-                                                </TableCell>
-                                            </Tooltip>
+                                            {
+                                                row.postUrl ? <Tooltip title='Открыть пост в ВК'>
+                                                                    <TableCell align="right" onClick={() => {handleClick(row.postUrl)}} >
+                                                                        <LinkIcon color='secondary' style={{cursor: 'pointer'}}/>
+                                                                    </TableCell>
+                                                               </Tooltip> : <TableCell />
+                                            }
 
                                         </TableRow>
                                     );
