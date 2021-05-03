@@ -25,21 +25,17 @@ const AdsHeader = (props) => {
                 </Typography>
             </Grid>
 
-            <Grid item xs={3} sm={3}>
+            <Grid item xs={6} sm={6}>
                 <Grid container spacing={1}>
-                    <Grid item xs={12} sm={12} align='right'>
-                        <Button variant='contained'
-                                color='secondary'
-                                onClick={updateStats}
-                        >
+                    <Grid item xs={9} />
+                    <Grid item xs={3} align='right'>
+                        <Button fullWidth variant='contained' color='secondary' onClick={updateStats} >
                             Обновить статистику
                         </Button>
                     </Grid>
-                    <Grid item xs={12} sm={12} align='right'>
-                        <Button variant='contained'
-                                color='disabled'
-                                onClick={updateSegmentSizes}
-                        >
+                    <Grid item xs={9} />
+                    <Grid item xs={3} align='right'>
+                        <Button fullWidth variant='contained' color='disabled' onClick={updateSegmentSizes} >
                             Обновить аудитории
                         </Button>
                     </Grid>
