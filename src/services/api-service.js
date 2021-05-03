@@ -127,7 +127,8 @@ export function spacedNumber(x) {
 
 
 export default class ApiService {
-    _apiBaseUrl = 'http://77.223.106.195:70/api/'
+    // _apiBaseUrl = 'http://77.223.106.195:70/api/'
+    _apiBaseUrl = 'http://127.0.0.1:8000/api/'
     _vkTokenUrl = `https://oauth.vk.com/authorize?client_id=7669131&display=page&redirect_uri=${this._apiBaseUrl}users.bindVk&scope=360448&response_type=code&v=5.126`
 
     async _getResponse(method, params) {
@@ -439,7 +440,7 @@ export default class ApiService {
     }
 
     _unpackCampaign = (campaign) => {
-        return {
+        let campStat = {
             campaignId: campaign.campaign_id,
             name: `${campaign.artist} - ${campaign.title}`,
             spent: roundToTwo(campaign.spent),
@@ -454,9 +455,29 @@ export default class ApiService {
             cover: campaign.cover_url,
             date: campaign.create_date,
             updateDate: campaign.update_date,
-            ads: this._unpackAds(campaign.ads),
             audienceCount: campaign.audience_count ? campaign.audience_count : '—'
         }
+        const adsStat = this._unpackAds(campaign.ads)
+        const campAverage = {
+            approved: null,
+            status: null,
+            name: '*** КАМПАНИЯ В ЦЕЛОМ ***',
+            spent: campaign.spent ? roundToTwo(campaign.spent) : '0',
+            reach: campaign.reach ? campaign.reach : '0',
+            cpm: roundToTwo(campaign.cpm),
+            listens: campaign.listens ? campaign.listens : '0',
+            cpl: roundToTwo(campaign.cpl),
+            ltr: roundToTwo(campaign.lr * 100),
+            saves: campaign.saves ? campaign.saves : '0',
+            cps: campaign.cps.toFixed(2),
+            str: roundToTwo(campaign.sr * 100),
+            adUrl: null,
+            postUrl: null,
+            audienceCount: campaign.audience_count ? campaign.audience_count : '—'
+        }
+        adsStat.unshift(campAverage)
+        campStat.ads = adsStat
+        return campStat
     }
 
     _unpackCampaigns = (campaigns) => {
