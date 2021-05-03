@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
-
+import jwt from 'jsonwebtoken'
 import NavigationPanel from "../navigaton-panel";
 import LoginPage from "../pages/login-page";
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
@@ -55,10 +55,24 @@ const theme = createMuiTheme({
 }, ruRU);
 
 
+const checkLoggedIn = () => {
+    let loggedIn = false
+
+    const token = localStorage.getItem('token')
+    if (token) {
+        const decodedToken = jwt.decode(token)
+        const dateNow = new Date()
+        if (decodedToken.exp * 1000 > dateNow.getTime())
+            loggedIn = true
+    }
+
+    return loggedIn
+}
+
 
 const App = () => {
 
-    const isLoggedInCheck = !!localStorage.getItem('token')
+    const isLoggedInCheck = checkLoggedIn()
     const [isLoggedIn, changeLoggedInStatus] = useState(isLoggedInCheck)
     const [user, setUser] = useState({
         username: 'unknown',
