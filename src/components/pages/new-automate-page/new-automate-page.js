@@ -54,6 +54,7 @@ class NewAutomatePage extends React.Component {
 
     onCampaignsLoaded = (campaigns) => {
         if (typeof campaigns !== 'undefined') {
+            campaigns = campaigns.filter(campaign => campaign.artist)
             this.setState({
                 campaigns: campaigns.filter(campaign => campaign.status !== 2),
                 loading: false,
