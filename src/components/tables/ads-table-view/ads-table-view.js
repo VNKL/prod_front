@@ -102,7 +102,7 @@ export default function AdsTableView(props) {
     const [dense, setDense] = React.useState(true);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-    const { rows, handleDownload } = props
+    const { rows, handleDownload, handleDelete } = props
 
     const handleClick = (url) => {
         window.open(url)
@@ -224,9 +224,21 @@ export default function AdsTableView(props) {
                 </Grid>
 
                 <Grid item align='right' xs={6}>
-                    <Button variant='contained' color='secondary' onClick={handleDownload} >
-                        Выгрузить статистику
-                    </Button>
+                    <Grid container align='right' spacing={1}>
+                        <Grid item xs={9} />
+                        <Grid item align='right' xs={3} >
+                            <Button fullWidth variant='contained' color='secondary' onClick={handleDownload} >
+                                Выгрузить статистику
+                            </Button>
+                        </Grid>
+                        <Grid item xs={9} />
+                        <Grid item align='right'  xs={3}>
+                            <Button fullWidth variant='contained' color='inherit' onClick={handleDelete} >
+                                Удалить кампанию
+                            </Button>
+                        </Grid>
+
+                    </Grid>
                 </Grid>
 
             </Grid>

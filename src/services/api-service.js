@@ -201,6 +201,10 @@ export default class ApiService {
         await this._getResponse('parsers.add', params)
     }
 
+    async deleteCampaign(campaignId) {
+        return await this._getResponse('ads.deleteCampaign', {id: campaignId})
+    }
+
     async downloadCampaignStats(campaignId, fileName) {
         await this._getDownloadResponse('ads.downloadCampaignStats', {id: campaignId}, fileName)
     }

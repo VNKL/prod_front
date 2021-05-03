@@ -6,6 +6,7 @@ import AdsHeader from "./ads-header";
 import AdsPageSkeleton from "./ads-page-skeleton";
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
+import { Redirect } from 'react-router-dom'
 
 
 function UpdateSegmentSizesAlert(props) {
@@ -20,7 +21,8 @@ export default class AdsPage extends React.Component {
         ads: null,
         campaign: null,
         hasData: false,
-        updateSegmentsIsStarting: false
+        updateSegmentsIsStarting: false,
+        doRedirect: false
     }
     api = new ApiService()
 
@@ -73,6 +75,10 @@ export default class AdsPage extends React.Component {
         }
     }
 
+    handleDelete = () => {
+        this.api.deleteCampaign(this.campaignId).then(() => {this.setState({doRedirect: true})})
+    }
+
     handleCloseAlert = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -88,7 +94,7 @@ export default class AdsPage extends React.Component {
                                             updateStats={this.updateStats}
                                             updateSegmentSizes={this.updateSegmentSizes}
                                             openCampaignInCabinet={this.openCampaignInCabinet}/> : null
-        const table = hasData ? <AdsTableView rows={ads} handleDownload={this.handleDownload}/> : null
+        const table = hasData ? <AdsTableView rows={ads} handleDownload={this.handleDownload} handleDelete={this.handleDelete}/> : null
         const skeleton = loading ? <AdsPageSkeleton /> : null
         const error = hasData ? null : skeleton ? null : <h2>Ошибка с получением данных</h2>
 
@@ -98,6 +104,7 @@ export default class AdsPage extends React.Component {
                 <Grid container spacing={3} alignItems='center'>
 
                     <Grid item xs={12}>
+                        { this.state.doRedirect && <Redirect to="/campaigns" /> }
                         {header}
                         {skeleton}
                     </Grid>
