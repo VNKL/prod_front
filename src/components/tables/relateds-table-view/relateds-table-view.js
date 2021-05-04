@@ -10,8 +10,6 @@ import Paper from '@material-ui/core/Paper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Tooltip from '@material-ui/core/Tooltip';
-import DeleteIcon from '@material-ui/icons/Delete';
-import StopIcon from '@material-ui/icons/Stop';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import ErrorIcon from '@material-ui/icons/Error';
 import PauseIcon from '@material-ui/icons/Pause';
@@ -19,74 +17,65 @@ import Link from "@material-ui/core/Link";
 import {Link as RouterLink} from "react-router-dom";
 import {dateStrFromParam, spacedNumber} from "../../../services/api-service";
 import {useStyles, getComparator, stableSort, EnhancedTableHead} from "../table-functions";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 
 
 const headCells = [
-    { id: 'cover', align: 'left', label: '', tooltip: 'Обложка продвигаемого релиза' },
-    { id: 'artist', align: 'left', label: 'Исполнитель', tooltip: 'Исполнитель (исполнители) продвигаемого релиза' },
-    { id: 'title', align: 'left', label: 'Название', tooltip: 'Название продвигаемого релиза' },
-    { id: 'status', align: 'right', label: 'Статус', tooltip: 'Статус кампании' },
-    { id: 'isAutomate', align: 'right', label: 'Авт.', tooltip: 'Автоматизация ведения кампании' },
-    { id: 'spent', align: 'right',  label: 'Расход', tooltip: 'Потраченная сумма в рублях' },
-    { id: 'reach', align: 'right',  label: 'Показы', tooltip: 'Показы объявлений' },
-    { id: 'cpm', align: 'right',  label: 'CPM', tooltip: 'Стоимость тысячи показов в рублях' },
-    { id: 'listens', align: 'right',  label: 'Прослушивания', tooltip: 'Прослушивания на плейлистах (не равно стримы)' },
-    { id: 'cpl', align: 'right',  label: 'CPL', tooltip: 'Cost Per Listen - стоимость одного прослушивания в рублях' },
-    { id: 'ltr', align: 'right',  label: 'LTR', tooltip: 'Listen Through Rate - конверсия из показов в прослушивания' },
-    { id: 'saves', align: 'right',  label: 'Добавления', tooltip: 'Сохранения аудио и плейлистов из объявлений в аудиозаписях пользователей' },
-    { id: 'cps', align: 'right',  label: 'CPS', tooltip: 'Cost Per Save - стоимость одного сохранения в рублях' },
-    { id: 'str', align: 'right',  label: 'STR', tooltip: 'Save Through Rate - конверсия из показов в добавления' },
-    { id: 'audienceCount', align: 'right',  label: 'Аудитория', tooltip: 'Сумма размеров аудиторий всех сегментов кампании' },
-    { id: 'date', align: 'right',  label: 'Дата', tooltip: 'Дата создания кампании' },
+    { id: 'photoUrl', align: 'left', label: '', tooltip: 'Фото с карточки артиста' },
+    { id: 'artistName', align: 'left', label: 'Артист', tooltip: 'Имя артиста, указанное на его карточке в ВК' },
+    { id: 'artistUrl', align: 'left', label: 'Ссылка', tooltip: 'Ссылка на карточку артиста в ВК' },
+    { id: 'status', align: 'center', label: 'Статус', tooltip: 'Статус задачи' },
+    { id: 'recurse', align: 'right',  label: 'Глубина', tooltip: 'Заданная настройка глубина рекурсивного прохода по карточкам похожих артистов' },
+    { id: 'nReleases', align: 'right',  label: 'Релизы', tooltip: 'Заданная настройка количества последних релизов на карточках похожих артистов' },
+    { id: 'lastDays', align: 'right',  label: 'DFLR', tooltip: 'Days From Last Release - заданная настройка желаемого количества дней, прошедших после выхода последнего релиза каждого похожего артиста' },
+    { id: 'medianDays', align: 'right',  label: 'MDBR', tooltip: 'Median Days Between Releases - заданная настройка медианы дней между релизами каждого похожего артиста' },
+    { id: 'listensMin', align: 'right',  label: 'L-Min', tooltip: 'Заданная настройка минимального порога по прослушиваниям на релизных плейлистах похожих артистов' },
+    { id: 'listensMax', align: 'right',  label: 'L-Max', tooltip: 'Заданная настройка максимального порога по прослушиваниям на релизных плейлистах похожих артистов' },
+    { id: 'relatedCount', align: 'right',  label: 'Количество', tooltip: 'Количество похожих артистов, найденных при заданных параметрах' },
+    { id: 'startDate', align: 'right',  label: 'Дата создания', tooltip: 'Дата создания задачи' },
+    { id: 'finishDate', align: 'right',  label: 'Дата завершения', tooltip: 'Дата завершения задачи' },
 ]
 
 
 const icons = [
 
-    <Tooltip title='Остановлена' >
-        <TableCell align="right" >
-            <StopIcon color='disabled' />
+    <Tooltip title='Ошибка' >
+        <TableCell align="center" >
+            <ErrorIcon color='error' />
         </TableCell>
     </Tooltip>,
 
     <Tooltip title='Запущена' >
-        <TableCell align="right">
+        <TableCell align="center">
             <PlayArrowIcon color='secondary'/>
         </TableCell>
     </Tooltip>,
 
-    <Tooltip title='Архивирована'>
-        <TableCell align="right" >
-            <DeleteIcon color='disabled'/>
-        </TableCell>
-    </Tooltip>,
-
-    <Tooltip title='Ошибка. Невозможно создать объявления с заданными настройками.
-                    Запусти кампанию с другими настройками или другим референсным постом.'>
-        <TableCell align="right" >
-            <ErrorIcon color='error'/>
+    <Tooltip title='Завершена'>
+        <TableCell align="center" >
+            <CheckCircleIcon color='secondary'/>
         </TableCell>
     </Tooltip>,
 
     <Tooltip title='Ожидает очереди'>
-        <TableCell align="right" >
-            <PauseIcon color='disabled'/>
+        <TableCell align="center" >
+            <PauseIcon color='secondary'/>
         </TableCell>
     </Tooltip>,
 
-    <Tooltip title='Запускается' >
-        <TableCell align="right">
-            <PlayArrowIcon color='disabled'/>
+    <Tooltip title='Отменена' >
+        <TableCell align="center" >
+            <ErrorIcon color='disabled' />
         </TableCell>
     </Tooltip>,
 
 ]
 
 
-export default function CampaignsTableView(props) {
+export default function RelatedsTableView(props) {
     const classes = useStyles();
     const [order, setOrder] = React.useState('desc');
-    const [orderBy, setOrderBy] = React.useState('date');
+    const [orderBy, setOrderBy] = React.useState('startDate');
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -147,37 +136,34 @@ export default function CampaignsTableView(props) {
                                         >
 
                                             <TableCell align="left" >
-                                                <Link component={RouterLink} to={`/ads/${row.campaignId}`} underline='none'>
-                                                    <Avatar src={row.cover} alt='cover' style={coverSize} />
+                                                <Link component={RouterLink} to={`/related/${row.relatedId}`} underline='none'>
+                                                    <Avatar src={row.photoUrl} alt='cover' style={coverSize} />
                                                 </Link>
                                             </TableCell>
 
                                             <TableCell align="left" >
-                                                <Link component={RouterLink} to={`/ads/${row.campaignId}`} underline='none'>
-                                                    {row.artist}
+                                                <Link component={RouterLink} to={`/related/${row.relatedId}`} underline='none'>
+                                                    {row.artistName}
                                                 </Link>
                                             </TableCell>
 
                                             <TableCell align="left" >
-                                                <Link component={RouterLink} to={`/ads/${row.campaignId}`} underline='none'>
-                                                    {row.title}
+                                                <Link component={RouterLink} to={`/related/${row.relatedId}`} underline='none'>
+                                                    {row.artistUrl}
                                                 </Link>
                                             </TableCell>
 
                                             { icons[row.status] }
-                                            { icons[row.isAutomate] }
 
-                                            <TableCell align="right">{spacedNumber(row.spent)}</TableCell>
-                                            <TableCell align="right">{spacedNumber(row.reach)}</TableCell>
-                                            <TableCell align="right">{row.cpm}</TableCell>
-                                            <TableCell align="right">{spacedNumber(row.listens)}</TableCell>
-                                            <TableCell align="right">{row.cpl}</TableCell>
-                                            <TableCell align="right">{`${row.ltr} %`}</TableCell>
-                                            <TableCell align="right">{spacedNumber(row.saves)}</TableCell>
-                                            <TableCell align="right">{row.cps}</TableCell>
-                                            <TableCell align="right">{`${row.str} %`}</TableCell>
-                                            <TableCell align="right">{spacedNumber(row.audienceCount)}</TableCell>
-                                            <TableCell align="right">{dateStrFromParam(row.date)}</TableCell>
+                                            <TableCell align="right">{row.recurse}</TableCell>
+                                            <TableCell align="right">{row.nReleases}</TableCell>
+                                            <TableCell align="right">{spacedNumber(row.lastDays)}</TableCell>
+                                            <TableCell align="right">{spacedNumber(row.medianDays)}</TableCell>
+                                            <TableCell align="right">{spacedNumber(row.listensMin)}</TableCell>
+                                            <TableCell align="right">{spacedNumber(row.listensMax)}</TableCell>
+                                            <TableCell align="right">{row.relatedCount ? spacedNumber(row.relatedCount) : ''}</TableCell>
+                                            <TableCell align="right">{dateStrFromParam(row.startDate)}</TableCell>
+                                            <TableCell align="right">{dateStrFromParam(row.finishDate)}</TableCell>
 
                                         </TableRow>
                                     );

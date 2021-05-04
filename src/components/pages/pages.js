@@ -12,10 +12,10 @@ import GrabbersPage from "./grabbers-page";
 import NewGrabberPage from "./new-grabber-page";
 import GrabberPage from "./grabber-page";
 import ChartsPage from "./charts-page";
-import ArtistsPage from "./artists-page";
-import ArtistPage from "./artist-page";
+import RelatedsPage from "./relateds-page";
 import AdsPage from "./ads-page";
 import AudiosPage from "./audios-page";
+import RelatedPage from "./related-page";
 
 
 
@@ -49,10 +49,10 @@ const Pages = () => {
                 return <GrabberPage grabberId={id} />
             }}/>
 
-            <Route path='/artists' component={ArtistsPage} />
-            <Route path='/artist/:id?' render={({match}) => {
+            <Route path='/relateds' component={RelatedsPage} />
+            <Route path='/related/:id?' render={({match}) => {
                 const {id} = match.params
-                return <ArtistPage artistId={id} />
+                return <RelatedPage relatedId={id} />
             }}/>
 
             <Route path='/charts' component={ChartsPage} />

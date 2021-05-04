@@ -23,7 +23,7 @@ const leftPanelListItems = [
     {text: 'Добавления', icon: <SaveIcon />, link: '/parsers'},
     {text: 'Промо-посты', icon: <ImageSearchIcon />, link: '/grabbers'},
     {text: 'Чарты', icon: <InsertChartIcon />, link: '/charts'},
-    {text: 'Артисты', icon: <EmojiPeopleIcon />, link: '/artists'},
+    {text: 'Похожие артисты', icon: <EmojiPeopleIcon />, link: '/relateds'},
 ]
 
 

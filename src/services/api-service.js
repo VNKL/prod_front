@@ -127,7 +127,8 @@ export function spacedNumber(x) {
 
 
 export default class ApiService {
-    _apiBaseUrl = 'http://77.223.106.195:70/api/'
+    // _apiBaseUrl = 'http://77.223.106.195:70/api/'
+    _apiBaseUrl = 'http://127.0.0.1:8000/api/'
     _vkTokenUrl = `https://oauth.vk.com/authorize?client_id=7669131&display=page&redirect_uri=${this._apiBaseUrl}users.bindVk&scope=360448&response_type=code&v=5.126`
 
     async _getResponse(method, params) {
@@ -208,6 +209,10 @@ export default class ApiService {
         return await this._getResponse('parsers.delete', {id: parserId})
     }
 
+    async deleteRelated(relatedId) {
+        return await this._getResponse('related.delete', {id: relatedId})
+    }
+
     async downloadCampaignStats(campaignId, fileName) {
         await this._getDownloadResponse('ads.downloadCampaignStats', {id: campaignId}, fileName)
     }
@@ -220,6 +225,11 @@ export default class ApiService {
     async downloadParsingResultCsv(parserId, resultPath) {
         const fileName = resultPath.replace('parsing_results/', '').replace('.zip', '.csv')
         await this._getDownloadResponse('parsers.downloadCsv', {id: parserId}, fileName)
+    }
+
+    async downloadRelatedResultCsv(relatedId, artistName) {
+        const fileName = `${artistName}.csv`
+        await this._getDownloadResponse('related.downloadCsv', {id: relatedId}, fileName)
     }
 
     async getAds(campaignId) {
@@ -261,6 +271,20 @@ export default class ApiService {
         const parsers = await this._getResponse('parsers.getAll')
         if (typeof parsers !== 'undefined') {
             return this._unpackParsers(parsers)
+        }
+    }
+
+    async getRelated(relatedId) {
+        const related = await this._getResponse('related.get', {id: relatedId, extended: 1})
+        if (typeof related !== "undefined") {
+            return this._unpackRelated(related)
+        }
+    }
+
+    async getRelateds() {
+        const relateds = await this._getResponse('related.getAll')
+        if (typeof relateds !== 'undefined') {
+            return this._unpackRelateds(relateds)
         }
     }
 
@@ -544,6 +568,49 @@ export default class ApiService {
                 resultPath: parser.result_path ? parser.result_path : null,
                 startDate: parser.start_date,
                 finishDate: parser.finish_date,
+            }
+        })
+    }
+
+    _unpackRelated = (related) => {
+        return {
+            id: related.id,
+            name: related.artist_name,
+            artists: this._unpackRelatedArtists(related.artists)
+        }
+    }
+
+    _unpackRelateds = (relateds) => {
+        return relateds.map((item) => {
+            return {
+                relatedId: item.id,
+                photoUrl: item.photo_url,
+                artistName: item.artist_name,
+                artistUrl: item.artist_url,
+                status: item.status,
+                recurse: item.recurse,
+                nReleases: item.n_releases,
+                lastDays: item.last_days,
+                medianDays: item.median_days,
+                listensMin: item.listens_min,
+                listensMax: item.listens_max,
+                relatedCount: item.related_count,
+                startDate: item.start_date,
+                finishDate: item.finish_date
+            }
+        })
+    }
+
+    _unpackRelatedArtists = (artists) => {
+        return artists.map((artist) => {
+            return {
+                name: artist.name,
+                cardLink: artist.card_url,
+                cardUrl: artist.card_url,
+                groupName: artist.group_name,
+                groupUrl: artist.group_url,
+                userName: artist.user_name,
+                userUrl: artist.user_url
             }
         })
     }

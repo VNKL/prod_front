@@ -182,7 +182,7 @@ export default function AudiosTableView(props) {
             </Paper>
 
             <Grid container>
-                <Grid items align='left' xs={6}>
+                <Grid item align='left' xs={6}>
                     <FormControlLabel
                         control={<Switch checked={dense} onChange={handleChangeDense} />}
                         label="Компактный вид"

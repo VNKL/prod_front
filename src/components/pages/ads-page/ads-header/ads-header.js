@@ -35,7 +35,7 @@ const AdsHeader = (props) => {
                     </Grid>
                     <Grid item xs={9} />
                     <Grid item xs={3} align='right'>
-                        <Button fullWidth variant='contained' color='disabled' onClick={updateSegmentSizes} >
+                        <Button fullWidth variant='contained' color='inherit' onClick={updateSegmentSizes} >
                             Обновить аудитории
                         </Button>
                     </Grid>

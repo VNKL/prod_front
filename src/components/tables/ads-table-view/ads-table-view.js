@@ -36,9 +36,9 @@ const headCells = [
     { id: 'saves', align: 'right',  label: 'Добавл.', tooltip: 'Сохранения аудио и плейлистов из объявлений в аудиозаписях пользователей' },
     { id: 'cps', align: 'right',  label: 'CPS', tooltip: 'Cost Per Save - стоимость одного сохранения в рублях' },
     { id: 'str', align: 'right',  label: 'STR', tooltip: 'Save Through Rate - конверсия из охвата в добавления' },
-    { id: 'audience', align: 'right',  label: 'Аудитория', tooltip: 'Размер аудитории сегмента с учетом его настроек' },
-    { id: 'ad', align: 'right',  label: 'Объявление', tooltip: 'Ссылка на объявление в рекламном кабинете ВК' },
-    { id: 'post', align: 'right',  label: 'Пост', tooltip: 'Ссылка на пост в ВК' },
+    { id: 'audienceCount', align: 'right',  label: 'Аудитория', tooltip: 'Размер аудитории сегмента с учетом его настроек' },
+    { id: 'adUrl', align: 'right',  label: 'Объявление', tooltip: 'Ссылка на объявление в рекламном кабинете ВК' },
+    { id: 'postUrl', align: 'right',  label: 'Пост', tooltip: 'Ссылка на пост в ВК' },
 ]
 
 
@@ -216,7 +216,7 @@ export default function AdsTableView(props) {
             </Paper>
 
             <Grid container>
-                <Grid items align='left' xs={6}>
+                <Grid item align='left' xs={6}>
                     <FormControlLabel
                         control={<Switch checked={dense} onChange={handleChangeDense} />}
                         label="Компактный вид"
