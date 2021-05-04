@@ -62,6 +62,12 @@ const statusIcons = [
         </TableCell>
     </Tooltip>,
 
+    <Tooltip title='Отменен' >
+        <TableCell align="center" >
+            <ErrorIcon color='disabled' />
+        </TableCell>
+    </Tooltip>,
+
 ]
 
 
