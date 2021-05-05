@@ -111,16 +111,43 @@ function roundToTwo(num) {
     return +(Math.round(num + "e+2")  + "e-2");
 }
 
+function _get_listens_from_post(post) {
+    let listensSum = 0
+    post.playlists.forEach((item) => {
+        listensSum = listensSum + item.listens
+    })
+    return listensSum
+}
+
+function _get_saves_from_post(post) {
+    let savesSum = 0
+    post.playlists.forEach((item) => {
+        savesSum = savesSum + item.followers
+    })
+    post.audios.forEach((item) => {
+        savesSum = savesSum + item.savers_count
+    })
+    return savesSum
+}
+
+function _get_doubles_from_post(post) {
+    let doublesSum = 0
+    post.audios.forEach((item) => {
+        doublesSum = doublesSum + item.doubles
+    })
+    return doublesSum
+}
+
 export function dateStrFromParam(param) {
     if (param) {
         return new Date(param).toLocaleString()
     } else {
-        return '-'
+        return '—'
     }
 }
 
 export function spacedNumber(x) {
-    if (x) {
+    if (typeof x === 'number') {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     }
 }
@@ -196,6 +223,11 @@ export default class ApiService {
         await this._getResponse('ads.createCampaign', params)
     }
 
+    async createGrabber(grabber_params) {
+        const params = this._refactor_grabber_params(grabber_params)
+        await this._getResponse('grabbers.add', params)
+    }
+
     async createParser(parser_params) {
         const params = this._refactor_parser_params(parser_params)
         await this._getResponse('parsers.add', params)
@@ -210,6 +242,10 @@ export default class ApiService {
         return await this._getResponse('ads.deleteCampaign', {id: campaignId})
     }
 
+    async deleteGrabber(grabberId) {
+        return await this._getResponse('grabbers.delete', {id: grabberId})
+    }
+
     async deleteParser(parserId) {
         return await this._getResponse('parsers.delete', {id: parserId})
     }
@@ -220,6 +256,11 @@ export default class ApiService {
 
     async downloadCampaignStats(campaignId, fileName) {
         await this._getDownloadResponse('ads.downloadCampaignStats', {id: campaignId}, fileName)
+    }
+
+    async downloadGrabberResultCsv(grabberId, groupName) {
+        const fileName = `${groupName}.csv`
+        await this._getDownloadResponse('grabbers.downloadCsv', {id: grabberId}, fileName)
     }
 
     async downloadParsingResult(parserId,  resultPath) {
@@ -262,6 +303,20 @@ export default class ApiService {
         const campaigns = await this._getResponse('ads.getAllCampaigns')
         if (typeof campaigns !== 'undefined') {
             return this._unpackCampaigns(campaigns)
+        }
+    }
+
+    async getGrabber(grabberId) {
+        const grabber = await this._getResponse('grabbers.get', {id: grabberId, extended: 1})
+        if (typeof grabber !== "undefined") {
+            return this._unpackGrabber(grabber)
+        }
+    }
+
+    async getGrabbers() {
+        const grabbers = await this._getResponse('grabbers.getAll')
+        if (typeof grabbers !== 'undefined') {
+            return this._unpackGrabbers(grabbers)
         }
     }
 
@@ -357,6 +412,19 @@ export default class ApiService {
             refactored_params.finish = 1
         }
         return refactored_params
+    }
+
+    _refactor_grabber_params = (params) => {
+        const dateFromArray = params.dateFrom.toLocaleDateString().split('.')
+        const dateToArray = params.dateTo.toLocaleDateString().split('.')
+        return {
+            group: params.groupUrl,
+            with_audio: params.withAudio,
+            ads_only: params.adsOnly,
+            with_ads: params.withAds,
+            date_from: `${dateFromArray[2]}-${dateFromArray[1]}-${dateFromArray[0]}`,
+            date_to: `${dateToArray[2]}-${dateToArray[1]}-${dateToArray[0]}`
+        }
     }
 
     _refactor_camp_params = (params) => {
@@ -552,6 +620,53 @@ export default class ApiService {
                 date: campaign.create_date,
                 dateFormatted: new Date(campaign.create_date).toLocaleDateString(),
                 audienceCount: campaign.audience_count ? campaign.audience_count : '—'
+            }
+        })
+    }
+
+    _unpackGrabber = (grabber) => {
+        return {
+            id: grabber.id,
+            name: grabber.group_name,
+            posts: this._unpackGrabberPosts(grabber.posts)
+        }
+    }
+
+    _unpackGrabbers = (grabbers) => {
+        return grabbers.map((grabber) => {
+            return {
+                grabberId: grabber.id,
+                groupAva: grabber.group_ava,
+                groupName: grabber.group_name,
+                groupUrl: grabber.group,
+                groupLink: grabber.group,
+                status: grabber.status,
+                withAudio: grabber.with_audio ? 1 : 0,
+                adsOnly: grabber.ads_only ? 1 : 0,
+                withAds: grabber.with_ads ? 1 : 0,
+                dateFrom: grabber.date_from ? new Date(grabber.date_from).toLocaleDateString() : '—',
+                dateTo: grabber.date_to ? new Date(grabber.date_to).toLocaleDateString() : '—',
+                postsCount: grabber.posts_count,
+                startDate: grabber.start_date,
+                finishDate: grabber.finish_date
+            }
+        })
+    }
+
+    _unpackGrabberPosts = (posts) => {
+        return posts.map((post) => {
+            return {
+                postUrl: `https://vk.com/wall${post.owner_id}_${post.post_id}`,
+                isAd: post.is_ad ? 1 : 0,
+                hasAudio: post.has_audios ? 1 : 0,
+                hasPlaylist: post.has_playlist ? 1 : 0,
+                listens: _get_listens_from_post(post),
+                saves: _get_saves_from_post(post),
+                doubles: _get_doubles_from_post(post),
+                likes: post.likes,
+                reposts: post.reposts,
+                comments: post.comments,
+                postDate: post.date
             }
         })
     }

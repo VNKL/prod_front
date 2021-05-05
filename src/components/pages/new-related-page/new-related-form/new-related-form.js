@@ -48,7 +48,7 @@ const NewRelatedForm = (props) => {
         let lastDaysError = false
         let medianDaysError = false
 
-        if (!state.artistUrl) {artistUrlError = true}
+        if (!state.artistUrl || state.artistUrl.indexOf('https://vk.com/artist/') === -1) {artistUrlError = true}
         if (!state.recurse.toString()) {recurseError = true}
         if (!parseInt(state.nReleases)) {nReleasesError = true}
         if (!parseInt(state.listensMin)) {listensMinError = true}

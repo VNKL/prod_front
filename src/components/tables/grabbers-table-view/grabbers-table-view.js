@@ -18,20 +18,23 @@ import {Link as RouterLink} from "react-router-dom";
 import {dateStrFromParam, spacedNumber} from "../../../services/api-service";
 import {useStyles, getComparator, stableSort, EnhancedTableHead} from "../table-functions";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import LinkIcon from "@material-ui/icons/Link";
+import NotInterestedIcon from "@material-ui/icons/NotInterested";
+import DoneIcon from "@material-ui/icons/Done";
 
 
 const headCells = [
-    { id: 'photoUrl', align: 'left', label: '', tooltip: 'Фото с карточки артиста' },
-    { id: 'artistName', align: 'left', label: 'Артист', tooltip: 'Имя артиста, указанное на его карточке в ВК' },
-    { id: 'artistUrl', align: 'left', label: 'Карточка артиста', tooltip: 'Ссылка на карточку артиста в ВК' },
-    { id: 'status', align: 'center', label: 'Статус', tooltip: 'Статус задачи' },
-    { id: 'recurse', align: 'right',  label: 'Рекурсия', tooltip: 'Заданная настройка глубина рекурсивного прохода по карточкам похожих артистов' },
-    { id: 'nReleases', align: 'right',  label: 'Релизы', tooltip: 'Заданная настройка количества последних релизов на карточках похожих артистов' },
-    { id: 'lastDays', align: 'right',  label: 'DFLR', tooltip: 'Days From Last Release - заданная настройка желаемого количества дней, прошедших после выхода последнего релиза каждого похожего артиста' },
-    { id: 'medianDays', align: 'right',  label: 'MDBR', tooltip: 'Median Days Between Releases - заданная настройка медианы дней между релизами каждого похожего артиста' },
-    { id: 'listensMin', align: 'right',  label: 'L-Min', tooltip: 'Заданная настройка минимального порога по прослушиваниям на релизных плейлистах похожих артистов' },
-    { id: 'listensMax', align: 'right',  label: 'L-Max', tooltip: 'Заданная настройка максимального порога по прослушиваниям на релизных плейлистах похожих артистов' },
-    { id: 'relatedCount', align: 'right',  label: 'Количество', tooltip: 'Количество похожих артистов, найденных при заданных параметрах' },
+    { id: 'groupAva', align: 'left', label: '', tooltip: 'Аватар паблика' },
+    { id: 'groupName', align: 'left', label: 'Сообщество', tooltip: 'Название сообщества в ВК' },
+    { id: 'groupUrl', align: 'left', label: 'Адрес сообщества', tooltip: 'Заданный при запуске задачи адрес сообщества' },
+    { id: 'groupLink', align: 'center', label: 'Ссылка', tooltip: 'Ссылка на сообщество в ВК' },
+    { id: 'status', align: 'center',  label: 'Статус', tooltip: 'Статус задачи' },
+    { id: 'adsOnly', align: 'center',  label: 'Только промо-посты', tooltip: 'Заданная настройка сбора только постов, помеченных как рекламные' },
+    { id: 'withAds', align: 'center',  label: 'С промо-постами', tooltip: 'Заданная настройка сбора всех постов, включая скрытые рекламные' },
+    { id: 'withAudio', align: 'center',  label: 'C аудио', tooltip: 'Заданная настройка сбора только постов, с прикрепленными аудиозаписями или плейлистами' },
+    { id: 'dateFrom', align: 'right',  label: 'Дата от', tooltip: 'Заданная начальная дата диапазона дат для поиска постов' },
+    { id: 'dateTo', align: 'right',  label: 'Дата до', tooltip: 'Заданная конечная дата диапазона дат для поиска постов' },
+    { id: 'postsCount', align: 'right',  label: 'Найдено постов', tooltip: 'Количество постов, найденных при заданных настройках' },
     { id: 'startDate', align: 'right',  label: 'Дата создания', tooltip: 'Дата создания задачи' },
     { id: 'finishDate', align: 'right',  label: 'Дата завершения', tooltip: 'Дата завершения задачи' },
 ]
@@ -72,7 +75,24 @@ const icons = [
 ]
 
 
-export default function RelatedsTableView(props) {
+const falseTrueIcons = [
+
+    <Tooltip title='Нет' >
+        <TableCell align="center" >
+            <NotInterestedIcon color='disabled' />
+        </TableCell>
+    </Tooltip>,
+
+    <Tooltip title='Да' >
+        <TableCell align="center">
+            <DoneIcon color='secondary'/>
+        </TableCell>
+    </Tooltip>,
+
+]
+
+
+export default function GrabbersTableView(props) {
     const classes = useStyles();
     const [order, setOrder] = React.useState('desc');
     const [orderBy, setOrderBy] = React.useState('startDate');
@@ -82,6 +102,10 @@ export default function RelatedsTableView(props) {
 
     const { rows } = props
     const coverSize = dense ? {width: 30, height: 30} : {width: 50, height: 50}
+
+    const handleClick = (url) => {
+        window.open(url)
+    }
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -136,32 +160,39 @@ export default function RelatedsTableView(props) {
                                         >
 
                                             <TableCell align="left" >
-                                                <Link component={RouterLink} to={`/related/${row.relatedId}`} underline='none'>
-                                                    <Avatar src={row.photoUrl} alt='cover' style={coverSize} />
+                                                <Link component={RouterLink} to={`/grabber/${row.grabberId}`} underline='none'>
+                                                    <Avatar src={row.groupAva} alt='cover' style={coverSize} />
                                                 </Link>
                                             </TableCell>
 
                                             <TableCell align="left" >
-                                                <Link component={RouterLink} to={`/related/${row.relatedId}`} underline='none'>
-                                                    {row.artistName}
+                                                <Link component={RouterLink} to={`/grabber/${row.grabberId}`} underline='none'>
+                                                    {row.groupName}
                                                 </Link>
                                             </TableCell>
 
                                             <TableCell align="left" >
-                                                <Link component={RouterLink} to={`/related/${row.relatedId}`} underline='none'>
-                                                    {row.artistUrl}
+                                                <Link component={RouterLink} to={`/grabber/${row.grabberId}`} underline='none'>
+                                                    {row.groupUrl}
                                                 </Link>
                                             </TableCell>
+
+                                            {
+                                                row.groupLink ? <Tooltip title='Открыть сообщество в ВК'>
+                                                    <TableCell align="center" onClick={() => {handleClick(row.groupLink)}} >
+                                                        <LinkIcon color='secondary' style={{cursor: 'pointer'}}/>
+                                                    </TableCell>
+                                                </Tooltip> : <TableCell />
+                                            }
 
                                             { icons[row.status] }
+                                            { falseTrueIcons[row.adsOnly] }
+                                            { falseTrueIcons[row.withAds] }
+                                            { falseTrueIcons[row.withAudio] }
 
-                                            <TableCell align="right">{row.recurse}</TableCell>
-                                            <TableCell align="right">{row.nReleases}</TableCell>
-                                            <TableCell align="right">{spacedNumber(row.lastDays)}</TableCell>
-                                            <TableCell align="right">{spacedNumber(row.medianDays)}</TableCell>
-                                            <TableCell align="right">{spacedNumber(row.listensMin)}</TableCell>
-                                            <TableCell align="right">{spacedNumber(row.listensMax)}</TableCell>
-                                            <TableCell align="right">{row.relatedCount ? spacedNumber(row.relatedCount) : ''}</TableCell>
+                                            <TableCell align="right">{row.dateFrom}</TableCell>
+                                            <TableCell align="right">{row.dateTo}</TableCell>
+                                            <TableCell align="right">{spacedNumber(row.postsCount)}</TableCell>
                                             <TableCell align="right">{dateStrFromParam(row.startDate)}</TableCell>
                                             <TableCell align="right">{dateStrFromParam(row.finishDate)}</TableCell>
 

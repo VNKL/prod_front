@@ -15,6 +15,7 @@ import blueGrey from '@material-ui/core/colors/blueGrey';
 import Pages from "../pages";
 import { ruRU } from '@material-ui/core/locale';
 import ApiService from "../../services/api-service";
+import ShowChartIcon from '@material-ui/icons/ShowChart';
 
 
 const leftPanelListItems = [
@@ -24,6 +25,7 @@ const leftPanelListItems = [
     {text: 'Промо-посты', icon: <ImageSearchIcon />, link: '/grabbers'},
     {text: 'Чарты', icon: <InsertChartIcon />, link: '/charts'},
     {text: 'Похожие артисты', icon: <EmojiPeopleIcon />, link: '/relateds'},
+    {text: 'Анализ артистов', icon: <ShowChartIcon />, link: '/analyzers'},
 ]
 
 
