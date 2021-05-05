@@ -23,7 +23,7 @@ import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 const headCells = [
     { id: 'photoUrl', align: 'left', label: '', tooltip: 'Фото с карточки артиста' },
     { id: 'artistName', align: 'left', label: 'Артист', tooltip: 'Имя артиста, указанное на его карточке в ВК' },
-    { id: 'artistUrl', align: 'left', label: 'Ссылка', tooltip: 'Ссылка на карточку артиста в ВК' },
+    { id: 'artistUrl', align: 'left', label: 'Карточка артиста', tooltip: 'Ссылка на карточку артиста в ВК' },
     { id: 'status', align: 'center', label: 'Статус', tooltip: 'Статус задачи' },
     { id: 'recurse', align: 'right',  label: 'Глубина', tooltip: 'Заданная настройка глубина рекурсивного прохода по карточкам похожих артистов' },
     { id: 'nReleases', align: 'right',  label: 'Релизы', tooltip: 'Заданная настройка количества последних релизов на карточках похожих артистов' },
