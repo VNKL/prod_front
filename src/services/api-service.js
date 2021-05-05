@@ -201,6 +201,11 @@ export default class ApiService {
         await this._getResponse('parsers.add', params)
     }
 
+    async createRelated(related_params) {
+        const params = this._refactor_related_params(related_params)
+        await this._getResponse('related.add', params)
+    }
+
     async deleteCampaign(campaignId) {
         return await this._getResponse('ads.deleteCampaign', {id: campaignId})
     }
@@ -385,6 +390,18 @@ export default class ApiService {
     _refactor_parser_params = (params) => {
         const param = _need_parser_param(params.method) ? params.param : 1
         return  {[params.method]: param, count_only: params.countOnly ? 1 : 0}
+    }
+
+    _refactor_related_params = (params) => {
+        return {
+            url: params.artistUrl,
+            recurse: params.recurse,
+            n_releases: params.nReleases,
+            listens_min: params.listensMin,
+            listens_max: params.listensMax,
+            last_days: params.lastDays,
+            median_days: params.medianDays
+        }
     }
 
     _unpackAds = (ads) => {

@@ -16,6 +16,7 @@ import RelatedsPage from "./relateds-page";
 import AdsPage from "./ads-page";
 import AudiosPage from "./audios-page";
 import RelatedPage from "./related-page";
+import NewRelatedPage from "./new-related-page";
 
 
 
@@ -50,6 +51,7 @@ const Pages = () => {
             }}/>
 
             <Route path='/relateds' component={RelatedsPage} />
+            <Route path='/new_related' component={NewRelatedPage} />
             <Route path='/related/:id?' render={({match}) => {
                 const {id} = match.params
                 return <RelatedPage relatedId={id} />
