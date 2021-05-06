@@ -2,14 +2,7 @@ import React from "react";
 import ApiService from "../../../services/api-service";
 import NoPermissionsBackdrop from "../../no-permissions-backdrop";
 import Spinner from "../../spinner";
-
-
-const UserCanChartsPage = () => {
-
-    return (
-        <h1>Charts Page</h1>
-    )
-}
+import ChartsPageSearch from "./charts-page-search";
 
 
 export default class ChartsPage extends React.Component {
@@ -31,7 +24,7 @@ export default class ChartsPage extends React.Component {
 
     render() {
         const {loading, canCharts} = this.state
-        const page = canCharts ? UserCanChartsPage() : <NoPermissionsBackdrop text={this.noPermissionsText}/>
+        const page = canCharts ? <ChartsPageSearch /> : <NoPermissionsBackdrop text={this.noPermissionsText}/>
         const spinner = loading ? <Spinner/> : null
         return (
             <div>

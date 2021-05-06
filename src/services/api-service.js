@@ -213,6 +213,14 @@ export default class ApiService {
         window.location.replace(url)
     }
 
+    async chartsSearch(search_params) {
+        const params = this._refactor_charts_search_params(search_params)
+        const result = await this._getResponse('charts.search', params)
+        if (typeof result !== 'undefined') {
+            return this._unpackChartsSearchResult(result)
+        }
+    }
+
     async createAutomate(automate_params) {
         const params = this._refactor_automate_params(automate_params)
         await this._getResponse('ads.createAutomate', params)
@@ -414,19 +422,6 @@ export default class ApiService {
         return refactored_params
     }
 
-    _refactor_grabber_params = (params) => {
-        const dateFromArray = params.dateFrom.toLocaleDateString().split('.')
-        const dateToArray = params.dateTo.toLocaleDateString().split('.')
-        return {
-            group: params.groupUrl,
-            with_audio: params.withAudio,
-            ads_only: params.adsOnly,
-            with_ads: params.withAds,
-            date_from: `${dateFromArray[2]}-${dateFromArray[1]}-${dateFromArray[0]}`,
-            date_to: `${dateToArray[2]}-${dateToArray[1]}-${dateToArray[0]}`
-        }
-    }
-
     _refactor_camp_params = (params) => {
         let sex = params.sex
         if (params.sex === 'all') {
@@ -453,6 +448,34 @@ export default class ApiService {
             refactored_params.client_id = params.client
         }
         return refactored_params
+    }
+
+    _refactor_charts_search_params = (params) => {
+        const refactored_params = {}
+        if (params.artist) {refactored_params.artist = params.artist}
+        if (params.title) {refactored_params.title = params.title}
+        if (params.dateFrom) {
+            const dateFromArray = params.dateFrom.toLocaleDateString().split('.')
+            refactored_params.date_from = `${dateFromArray[2]}-${dateFromArray[1]}-${dateFromArray[0]}`
+        }
+        if (params.dateTo) {
+            const dateToArray = params.dateTo.toLocaleDateString().split('.')
+            refactored_params.date_to = `${dateToArray[2]}-${dateToArray[1]}-${dateToArray[0]}`
+        }
+        return refactored_params
+    }
+
+    _refactor_grabber_params = (params) => {
+        const dateFromArray = params.dateFrom.toLocaleDateString().split('.')
+        const dateToArray = params.dateTo.toLocaleDateString().split('.')
+        return {
+            group: params.groupUrl,
+            with_audio: params.withAudio,
+            ads_only: params.adsOnly,
+            with_ads: params.withAds,
+            date_from: `${dateFromArray[2]}-${dateFromArray[1]}-${dateFromArray[0]}`,
+            date_to: `${dateToArray[2]}-${dateToArray[1]}-${dateToArray[0]}`
+        }
     }
 
     _refactor_parser_params = (params) => {
@@ -620,6 +643,19 @@ export default class ApiService {
                 date: campaign.create_date,
                 dateFormatted: new Date(campaign.create_date).toLocaleDateString(),
                 audienceCount: campaign.audience_count ? campaign.audience_count : '—'
+            }
+        })
+    }
+
+    _unpackChartsSearchResult = (result) => {
+        return result.map((release) => {
+            return {
+                id: release.id,
+                artist: release.artist,
+                title: release.title,
+                // distributor: release.distributor ? release.distributor : '* информация недоступна *',
+                coverUrl: release.cover_url,
+                positionsCount: release.positions_count
             }
         })
     }
