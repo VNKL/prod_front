@@ -58,8 +58,8 @@ const getLocationName = (path) => {
         return 'Промо-посты'
     } else if (path === '/charts') {
         return 'Чарты'
-    } else if (path === '/artists') {
-        return 'Артисты'
+    } else if (path === '/relateds') {
+        return 'Похожие артисты'
     } else if (path === '/new_campaign') {
         return 'Новая кампания'
     } else if (path === '/new_parser') {
