@@ -451,7 +451,7 @@ export default class ApiService {
     }
 
     _refactor_charts_search_params = (params) => {
-        const refactored_params = {}
+        const refactored_params = {extended: 1}
         if (params.artist) {refactored_params.artist = params.artist}
         if (params.title) {refactored_params.title = params.title}
         if (params.dateFrom) {
@@ -653,9 +653,9 @@ export default class ApiService {
                 id: release.id,
                 artist: release.artist,
                 title: release.title,
-                // distributor: release.distributor ? release.distributor : '* информация недоступна *',
                 coverUrl: release.cover_url,
-                positionsCount: release.positions_count
+                positionsCount: release.positions_count,
+                positions: release.positions
             }
         })
     }

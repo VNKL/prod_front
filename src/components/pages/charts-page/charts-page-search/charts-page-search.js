@@ -1,10 +1,10 @@
 import Grid from "@material-ui/core/Grid";
 import ChartsPageForm from "../charts-page-form";
-import ChartsSearchTableView from "../../../tables/charts-search-table-view";
 import React from "react";
 import AudiosPageSkeleton from "../../audios-page/audios-page-skeleton";
 import ApiService from "../../../../services/api-service";
 import ChartsPageHelpBlock from "../charts-page-help-block";
+import ChartsSearchListView from "../../../lists/charts-search-list-view";
 
 
 const ChartsPageSearch = () => {
@@ -39,7 +39,7 @@ const ChartsPageSearch = () => {
                     </Grid>
                     <Grid item xs={12}>
                         {
-                            state.loading ?<AudiosPageSkeleton /> : <ChartsSearchTableView rows={state.releases} />
+                            state.loading ?<AudiosPageSkeleton /> : <ChartsSearchListView releases={state.releases} />
                         }
                     </Grid>
                 </Grid>
