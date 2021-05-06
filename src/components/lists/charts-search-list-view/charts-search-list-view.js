@@ -54,7 +54,7 @@ const renderPosition = (position, classes) => {
                 <Avatar > {position.current} </Avatar>
             </ListItemIcon>
             <ListItemText primary={refactPositionDate(position.date)}
-                          secondary={`Предыдущая позиция: ${position.previous ? position.previous : '—'}, дельта: ${position.delta ? position.delta : '—'}`}/>
+                          secondary={`Предыдущая позиция: ${position.previous ? position.previous : '–'}, дельта: ${position.delta ? position.delta : '–'}`}/>
         </ListItem>
     )
 }
@@ -119,7 +119,7 @@ const ChartsSearchListView = (props) => {
 
                             <ListItem button onClick={() => {handleOpenRelease(release.id)}}>
                                 <ListItemIcon> <Avatar src={release.coverUrl} alt='cover' /> </ListItemIcon>
-                                <ListItemText primary={`${release.artist} - ${release.title}`}
+                                <ListItemText primary={`${release.artist} – ${release.title}`}
                                               secondary={`Позиций: ${release.positionsCount}`}/>
                                 {checkReleaseOpen(release.id) ? <ExpandLess /> : <ExpandMore />}
                             </ListItem>
