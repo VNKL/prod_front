@@ -226,6 +226,11 @@ export default class ApiService {
         await this._getResponse('ads.createAutomate', params)
     }
 
+    async createAnalyzer(artistUrl) {
+        const params = {artist_url: artistUrl}
+        await this._getResponse('analyzers.add', params)
+    }
+
     async createCampaign(camp_params) {
         const params = this._refactor_camp_params(camp_params)
         await this._getResponse('ads.createCampaign', params)
@@ -290,6 +295,20 @@ export default class ApiService {
         const campaign = await this._getResponse('ads.getCampaign', {id: campaignId, extended: 1})
         if (typeof campaign !== "undefined") {
             return this._unpackCampaign(campaign)
+        }
+    }
+
+    async getAnalyzer(analyzerId) {
+        const analyzer = await this._getResponse('analyzers.get', {id: analyzerId, extended: 1})
+        if (typeof analyzer !== "undefined") {
+            return this._unpackAnalyzer(analyzer)
+        }
+    }
+
+    async getAnalyzers() {
+        const anals = await this._getResponse('analyzers.getAll')
+        if (typeof anals !== 'undefined') {
+            return this._unpackAnalyzers(anals)
         }
     }
 
@@ -513,6 +532,30 @@ export default class ApiService {
                 adUrl: `https://vk.com/ads?act=office&union_id=${ad.ad_id}`,
                 postUrl: `https://vk.com/wall-${ad.post_owner}_${ad.post_id}`,
                 audienceCount: ad.audience_count ? ad.audience_count : '—'
+            }
+        })
+    }
+
+    _unpackAnalyzer = (anal) => {
+        return {
+            id: anal.id,
+            artistName: anal.artist_name,
+            photoUrl: anal.photo_url,
+            artistUrl: anal.param,
+            analysis: anal.result ? anal.result.analysis : null
+        }
+    }
+
+    _unpackAnalyzers = (anals) => {
+        return anals.map((anal) => {
+            return {
+                analyzerId: anal.id,
+                photoUrl: anal.photo_url,
+                artistName: anal.artist_name,
+                artistUrl: anal.param,
+                status: anal.status,
+                startDate: anal.start_date,
+                finishDate: anal.finish_date
             }
         })
     }

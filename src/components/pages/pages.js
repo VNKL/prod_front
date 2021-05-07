@@ -17,6 +17,8 @@ import AdsPage from "./ads-page";
 import AudiosPage from "./audios-page";
 import RelatedPage from "./related-page";
 import NewRelatedPage from "./new-related-page";
+import AnalyzersPage from "./analyzers-page";
+import AnalyzerPage from "./analyzer-page";
 
 
 
@@ -27,7 +29,6 @@ const Pages = () => {
 
             <Route path='/campaigns' component={CampaignsPage} />
             <Route path='/new_campaign' component={NewCampaignPage} />
-
             <Route path='/ads/:id?' render={({match}) => {
                 const {id} = match.params
                 return <AdsPage campaignId={id} />
@@ -43,13 +44,6 @@ const Pages = () => {
                 return <AudiosPage parserId={id} />
             }}/>
 
-            <Route path='/grabbers' component={GrabbersPage} />
-            <Route path='/new_grabber' component={NewGrabberPage} />
-            <Route path='/grabber/:id?' render={({match}) => {
-                const {id} = match.params
-                return <GrabberPage grabberId={id} />
-            }}/>
-
             <Route path='/relateds' component={RelatedsPage} />
             <Route path='/new_related' component={NewRelatedPage} />
             <Route path='/related/:id?' render={({match}) => {
@@ -57,7 +51,20 @@ const Pages = () => {
                 return <RelatedPage relatedId={id} />
             }}/>
 
+            <Route path='/grabbers' component={GrabbersPage} />
+            <Route path='/new_grabber' component={NewGrabberPage} />
+            <Route path='/grabber/:id?' render={({match}) => {
+                const {id} = match.params
+                return <GrabberPage grabberId={id} />
+            }}/>
+
             <Route path='/charts' component={ChartsPage} />
+
+            <Route path='/analyzers' component={AnalyzersPage} />
+            <Route path='/analyzer/:id?' render={({match}) => {
+                const {id} = match.params
+                return <AnalyzerPage analyzerId={id} />
+            }}/>
 
             <Route path='/' component={MainPage} />
 

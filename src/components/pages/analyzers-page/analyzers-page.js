@@ -2,17 +2,10 @@ import React from "react";
 import ApiService from "../../../services/api-service";
 import NoPermissionsBackdrop from "../../no-permissions-backdrop";
 import Spinner from "../../spinner";
+import AnalyzersPageInterface from "./analyzers-page-interface";
 
 
-const UserCanArtistsPage = () => {
-
-    return (
-        <h1>Artists Page</h1>
-    )
-}
-
-
-export default class ChartsPage extends React.Component {
+export default class AnalyzersPage extends React.Component {
 
     state = {
         canAnalyzers: undefined,
@@ -31,7 +24,7 @@ export default class ChartsPage extends React.Component {
 
     render() {
         const {loading, canAnalyzers} = this.state
-        const page = canAnalyzers ? UserCanArtistsPage() : <NoPermissionsBackdrop text={this.noPermissionsText}/>
+        const page = canAnalyzers ? <AnalyzersPageInterface /> : <NoPermissionsBackdrop text={this.noPermissionsText}/>
         const spinner = loading ? <Spinner/> : null
         return (
             <div>
