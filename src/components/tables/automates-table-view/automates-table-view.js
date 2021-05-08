@@ -91,10 +91,10 @@ function stopButton(automateId, handleStop, status) {
 export default function AutomatesTableView(props) {
     const classes = useStyles();
     const [order, setOrder] = React.useState('desc');
-    const [orderBy, setOrderBy] = React.useState('createDate');
+    const [orderBy, setOrderBy] = React.useState('status');
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
     const { rows, handleStop } = props
     const coverSize = dense ? {width: 30, height: 30} : {width: 50, height: 50}
