@@ -909,11 +909,11 @@ const AnalyzerPageListView = (props) => {
     const { anal } = props
     const releases = anal.singles ? {singles: anal.singles, albums: anal.albums} : null
     const accounts = anal.artist.links.length > 0 ? anal.artist.links : null
-    const videos = anal ? anal.videos : null
+    const videos = anal.videos.count ? anal.videos : null
     const genres = anal ? anal.genres : null
     const top = anal ? anal.top : null
-    const charts = anal ? anal.charts : null
-    const chartsTop = anal.charts ? {days: anal.charts.top_by_days, positions: anal.charts.top_by_positions} : null
+    const charts = anal.charts.all_time ? anal.charts : null
+    const chartsTop = anal.charts.all_time ? {days: anal.charts.top_by_days, positions: anal.charts.top_by_positions} : null
     const chartsStats = anal.charts.days_medians ? {days: anal.charts.days_medians, positions: anal.charts.positions_medians} : null
 
 
