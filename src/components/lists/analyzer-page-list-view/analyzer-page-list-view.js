@@ -79,6 +79,26 @@ const refactChartPositionDate = (date) => {
 }
 
 
+const getAccountIcon = (link) => {
+    if (link.type === 'user_page') {
+        return (
+            <Tooltip title="Личная страница" arrow >
+                <ListItemIcon>
+                    <AccountCircleIcon />
+                </ListItemIcon>
+            </Tooltip>
+        )
+    } else {
+        return (
+            <Tooltip title="Сообщество" arrow >
+                <ListItemIcon>
+                    <GroupIcon />
+                </ListItemIcon>
+            </Tooltip>
+        )
+    }
+}
+
 const getReleaseLink = (release) => {
     return `https://vk.com/music/album/${release.owner_id}_${release.playlist_id}_${release.access_key}`
 }
@@ -147,7 +167,7 @@ const renderAccounts = (links, openLinks, handleOpenLinks, classes) => {
                         links.map((link, idx) => {
                             return (
                                 <ListItem key={idx} button className={classes.firstLeft} onClick={() => {window.open(link.url)}}>
-                                    <ListItemIcon> {link.type === 'user_page' ? <AccountCircleIcon /> : <GroupIcon />} </ListItemIcon>
+                                    { getAccountIcon(link) }
                                     <ListItemText primary={link.title} secondary={link.subtitle}/>
                                 </ListItem>
                             )

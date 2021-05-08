@@ -251,6 +251,10 @@ export default class ApiService {
         await this._getResponse('related.add', params)
     }
 
+    async deleteAnalyzer(analId) {
+        return await this._getResponse('analyzers.delete', {id: analId})
+    }
+
     async deleteCampaign(campaignId) {
         return await this._getResponse('ads.deleteCampaign', {id: campaignId})
     }
