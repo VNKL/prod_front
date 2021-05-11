@@ -16,7 +16,7 @@ import Pages from "../pages";
 import { ruRU } from '@material-ui/core/locale';
 import ApiService from "../../services/api-service";
 import ShowChartIcon from '@material-ui/icons/ShowChart';
-import HeadsetIcon from '@material-ui/icons/Headset';
+// import HeadsetIcon from '@material-ui/icons/Headset';
 
 
 const leftPanelListItems = [
@@ -27,7 +27,7 @@ const leftPanelListItems = [
     {text: 'Промо-посты', icon: <ImageSearchIcon />, link: '/grabbers'},
     {text: 'Чарты', icon: <InsertChartIcon />, link: '/charts'},
     {text: 'Анализ артистов', icon: <ShowChartIcon />, link: '/analyzers'},
-    {text: 'Что еще слушают', icon: <HeadsetIcon />, link: '/listeners'},
+    // {text: 'Что еще слушают', icon: <HeadsetIcon />, link: '/listeners'},
 ]
 
 
