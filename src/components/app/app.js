@@ -6,16 +6,16 @@ import LoginPage from "../pages/login-page";
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import SettingsPowerIcon from '@material-ui/icons/SettingsPower';
 import SaveIcon from '@material-ui/icons/Save';
-// import ImageSearchIcon from '@material-ui/icons/ImageSearch';
+import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import InsertChartIcon from '@material-ui/icons/InsertChart';
-// import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
+import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import {MuiThemeProvider} from "@material-ui/core";
 import { createMuiTheme } from '@material-ui/core/styles';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 import Pages from "../pages";
 import { ruRU } from '@material-ui/core/locale';
 import ApiService from "../../services/api-service";
-// import ShowChartIcon from '@material-ui/icons/ShowChart';
+import ShowChartIcon from '@material-ui/icons/ShowChart';
 // import HeadsetIcon from '@material-ui/icons/Headset';
 
 
@@ -23,10 +23,10 @@ const leftPanelListItems = [
     {text: 'Кампании', icon: <PlaylistAddCheckIcon />, link: '/campaigns'},
     {text: 'Автоматизации', icon: <SettingsPowerIcon />, link: '/automates'},
     {text: 'Добавления', icon: <SaveIcon />, link: '/parsers'},
-    // {text: 'Похожие артисты', icon: <EmojiPeopleIcon />, link: '/relateds'},
-    // {text: 'Промо-посты', icon: <ImageSearchIcon />, link: '/grabbers'},
+    {text: 'Похожие артисты', icon: <EmojiPeopleIcon />, link: '/relateds'},
+    {text: 'Промо-посты', icon: <ImageSearchIcon />, link: '/grabbers'},
     {text: 'Чарты', icon: <InsertChartIcon />, link: '/charts'},
-    // {text: 'Анализ артистов', icon: <ShowChartIcon />, link: '/analyzers'},
+    {text: 'Анализ артистов', icon: <ShowChartIcon />, link: '/analyzers'},
     // {text: 'Что еще слушают', icon: <HeadsetIcon />, link: '/listeners'},
 ]
 
