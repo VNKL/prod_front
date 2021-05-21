@@ -19,7 +19,9 @@ import RelatedPage from "./related-page";
 import NewRelatedPage from "./new-related-page";
 import AnalyzersPage from "./analyzers-page";
 import AnalyzerPage from "./analyzer-page";
-
+import ListenersesPage from "./listenerses-page";
+import NewListenersPage from "./new-listeners-page/new-listeners-page";
+import ListenersPage from "./listeners-page";
 
 
 const Pages = () => {
@@ -65,6 +67,14 @@ const Pages = () => {
                 const {id} = match.params
                 return <AnalyzerPage analyzerId={id} />
             }}/>
+
+            <Route path='/listeners' component={ListenersesPage} />
+            <Route path='/new_listeners' component={NewListenersPage} />
+            <Route path='/listeners_result/:id?' render={({match}) => {
+                const {id} = match.params
+                return <ListenersPage listenersId={id} />
+            }}/>
+
 
             <Route path='/' component={MainPage} />
 

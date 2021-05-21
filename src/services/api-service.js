@@ -154,8 +154,8 @@ export function spacedNumber(x) {
 
 
 export default class ApiService {
-    _apiBaseUrl = 'http://77.223.106.195:70/api/'
-    // _apiBaseUrl = 'http://127.0.0.1:8000/api/'
+    // _apiBaseUrl = 'http://77.223.106.195:70/api/'
+    _apiBaseUrl = 'http://127.0.0.1:8000/api/'
     _vkTokenUrl = `https://oauth.vk.com/authorize?client_id=7669131&display=page&redirect_uri=${this._apiBaseUrl}users.bindVk&scope=360448&response_type=code&v=5.126`
 
     async _getResponse(method, params) {
@@ -213,16 +213,16 @@ export default class ApiService {
         window.location.replace(url)
     }
 
-    async chartsSearch(search_params) {
-        const params = this._refactor_charts_search_params(search_params)
+    async chartsSearch(searchParams) {
+        const params = this._refactor_charts_search_params(searchParams)
         const result = await this._getResponse('charts.search', params)
         if (typeof result !== 'undefined') {
             return this._unpackChartsSearchResult(result)
         }
     }
 
-    async createAutomate(automate_params) {
-        const params = this._refactor_automate_params(automate_params)
+    async createAutomate(automateParams) {
+        const params = this._refactor_automate_params(automateParams)
         await this._getResponse('ads.createAutomate', params)
     }
 
@@ -231,23 +231,28 @@ export default class ApiService {
         await this._getResponse('analyzers.add', params)
     }
 
-    async createCampaign(camp_params) {
-        const params = this._refactor_camp_params(camp_params)
+    async createCampaign(campParams) {
+        const params = this._refactor_camp_params(campParams)
         await this._getResponse('ads.createCampaign', params)
     }
 
-    async createGrabber(grabber_params) {
-        const params = this._refactor_grabber_params(grabber_params)
+    async createGrabber(grabberParams) {
+        const params = this._refactor_grabber_params(grabberParams)
         await this._getResponse('grabbers.add', params)
     }
 
-    async createParser(parser_params) {
-        const params = this._refactor_parser_params(parser_params)
+    async createListeners(listenersParams) {
+        const params = this._refactor_listeners_params(listenersParams)
+        await this._getResponse('users_audios.add', params)
+    }
+
+    async createParser(parserParams) {
+        const params = this._refactor_parser_params(parserParams)
         await this._getResponse('parsers.add', params)
     }
 
-    async createRelated(related_params) {
-        const params = this._refactor_related_params(related_params)
+    async createRelated(relatedParams) {
+        const params = this._refactor_related_params(relatedParams)
         await this._getResponse('related.add', params)
     }
 
@@ -261,6 +266,10 @@ export default class ApiService {
 
     async deleteGrabber(grabberId) {
         return await this._getResponse('grabbers.delete', {id: grabberId})
+    }
+
+    async deleteListeners(listenersId) {
+        return await this._getResponse('users_audios.delete', {id: listenersId})
     }
 
     async deleteParser(parserId) {
@@ -278,6 +287,11 @@ export default class ApiService {
     async downloadGrabberResultCsv(grabberId, groupName) {
         const fileName = `${groupName}.csv`
         await this._getDownloadResponse('grabbers.downloadCsv', {id: grabberId}, fileName)
+    }
+
+    async downloadListenersResultCsv(listenersId, ticketName) {
+        const fileName = `${ticketName}.csv`
+        await this._getDownloadResponse('users_audios.downloadCsv', {id: listenersId}, fileName)
     }
 
     async downloadParsingResult(parserId,  resultPath) {
@@ -348,6 +362,20 @@ export default class ApiService {
         const grabbers = await this._getResponse('grabbers.getAll')
         if (typeof grabbers !== 'undefined') {
             return this._unpackGrabbers(grabbers)
+        }
+    }
+
+    async getListeners(listenersId) {
+        const listeners = await this._getResponse('users_audios.get', {id: listenersId, extended: 1})
+        if (typeof listeners !== "undefined") {
+            return this._unpackListeners(listeners)
+        }
+    }
+
+    async getListenerses() {
+        const listenerses = await this._getResponse('users_audios.getAll')
+        if (typeof listenerses !== 'undefined') {
+            return this._unpackListenerses(listenerses)
         }
     }
 
@@ -498,6 +526,15 @@ export default class ApiService {
             with_ads: params.withAds,
             date_from: `${dateFromArray[2]}-${dateFromArray[1]}-${dateFromArray[0]}`,
             date_to: `${dateToArray[2]}-${dateToArray[1]}-${dateToArray[0]}`
+        }
+    }
+
+    _refactor_listeners_params = (params) => {
+        return {
+            name: params.ticketName,
+            type: params.ticketType === 'Треки' ? 'tracks' : 'artists',
+            n_last: params.nLast,
+            user_ids: params.userIdsArray.join(','),
         }
     }
 
@@ -750,6 +787,38 @@ export default class ApiService {
                 reposts: post.reposts,
                 comments: post.comments,
                 postDate: post.date
+            }
+        })
+    }
+
+    _unpackListeners = (listeners) => {
+        return {
+            id: listeners.id,
+            name: listeners.name,
+            items: this._unpackListenersItems(listeners.items)
+        }
+    }
+
+    _unpackListenersItems = (items) => {
+        return items.map((item) => {
+            return {
+                name: item.name,
+                shareUsers: item.share_users,
+                shareItems: item.share_items,
+            }
+        })
+    }
+
+    _unpackListenerses = (listenerses) => {
+        return listenerses.map((item) => {
+            return {
+                listenersId: item.id,
+                name: item.name,
+                status: item.status,
+                type: item.type === 'tracks' ? 'Треки' : 'Исполнители',
+                nLast: item.n_last,
+                startDate: item.start_date,
+                finishDate: item.finish_date
             }
         })
     }
