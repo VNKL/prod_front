@@ -23,11 +23,11 @@ const leftPanelListItems = [
     {text: 'Кампании', icon: <PlaylistAddCheckIcon />, link: '/campaigns'},
     {text: 'Автоматизации', icon: <SettingsPowerIcon />, link: '/automates'},
     {text: 'Добавления', icon: <SaveIcon />, link: '/parsers'},
-    {text: 'Похожие артисты', icon: <EmojiPeopleIcon />, link: '/relateds'},
-    {text: 'Промо-посты', icon: <ImageSearchIcon />, link: '/grabbers'},
-    {text: 'Чарты', icon: <InsertChartIcon />, link: '/charts'},
-    {text: 'Анализ артистов', icon: <ShowChartIcon />, link: '/analyzers'},
     {text: 'Что еще слушают', icon: <HeadsetIcon />, link: '/listeners'},
+    {text: 'Похожие артисты', icon: <EmojiPeopleIcon />, link: '/relateds'},
+    {text: 'Анализ артистов', icon: <ShowChartIcon />, link: '/analyzers'},
+    {text: 'Чарты', icon: <InsertChartIcon />, link: '/charts'},
+    {text: 'Промо-посты', icon: <ImageSearchIcon />, link: '/grabbers'},
 ]
 
 

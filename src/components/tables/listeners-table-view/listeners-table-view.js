@@ -31,7 +31,7 @@ export default function ListenersTableView(props) {
     const [orderBy, setOrderBy] = React.useState('shareUsers');
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(true);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = React.useState(25);
 
     const { rows, handleDownload, handleDelete } = props
 
