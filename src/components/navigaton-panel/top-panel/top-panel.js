@@ -54,11 +54,11 @@ const getLocationName = (path) => {
         return 'Автоматизации'
     } else if (path === '/parsers') {
         return 'Добавления'
-    } else if (path === '/grabbers') {
+    } else if (path.indexOf('grabber') !== -1) {
         return 'Промо-посты'
     } else if (path === '/charts') {
         return 'Чарты'
-    } else if (path === '/relateds') {
+    } else if (path.indexOf('related') !== -1) {
         return 'Похожие артисты'
     } else if (path === '/new_campaign') {
         return 'Новая кампания'
@@ -70,6 +70,16 @@ const getLocationName = (path) => {
         return 'Объявления'
     } else if (path.indexOf('parser/') !== -1) {
         return 'Аудиозаписи'
+    } else if (path.indexOf('/listeners') !== -1) {
+        return 'Что еще слушают'
+    } else if (path.indexOf('/analyzer') !== -1) {
+        return 'Анализ артистов'
+    } else if (path.indexOf('/new_listeners') !== -1) {
+        return 'Новая задача на добавления аудитории'
+    } else if (path.indexOf('/new_related') !== -1) {
+        return 'Новый поиск похожих артистов'
+    } else if (path.indexOf('/new_grabber') !== -1) {
+        return 'Новый поиск промо-постов'
     }
 }
 
