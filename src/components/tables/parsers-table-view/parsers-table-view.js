@@ -20,7 +20,7 @@ import {Link as RouterLink} from "react-router-dom";
 import LinkIcon from "@material-ui/icons/Link";
 import ApiService from "../../../services/api-service";
 import {dateStrFromParam, spacedNumber} from "../../../services/api-service";
-import {useStyles, getComparator, stableSort, EnhancedTableHead} from "../table-functions";
+import {useStyles, getComparator, stableSort, EnhancedTableHead, FilterToolbar} from "../table-functions";
 
 
 const headCells = [
@@ -95,14 +95,14 @@ export default function ParsersTableView(props) {
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(true);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rows, setRows] = React.useState(props.rows);
 
-    const { rows } = props
+    const allRows = props.rows
 
     const handleDownload = (id, path) => {
         const api = new ApiService()
         api.downloadParsingResult(id, path)
     }
-
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -137,13 +137,19 @@ export default function ParsersTableView(props) {
         }
     }
 
+    const handleChangeFilter = (event) => {
+        const value = event.target.value
+        const filteredRows = allRows.filter(row => row.methodParam.toLowerCase().indexOf(value.toLowerCase()) > -1)
+        setRows(filteredRows)
+    };
+
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
                 <TableContainer>
-
+                    <FilterToolbar handleChange={handleChangeFilter} placeholder='введи значение параметра для поиска'/>
                     <Table
                         className={classes.table}
                         aria-labelledby="tableTitle"

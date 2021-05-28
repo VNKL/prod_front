@@ -20,7 +20,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import {spacedNumber} from "../../../services/api-service";
-import {useStyles, getComparator, stableSort, EnhancedTableHead} from "../table-functions";
+import {useStyles, getComparator, stableSort, EnhancedTableHead, FilterToolbar} from "../table-functions";
 
 
 const headCells = [
@@ -102,8 +102,10 @@ export default function AdsTableView(props) {
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(true);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rows, setRows] = React.useState(props.rows);
 
-    const { rows, handleDownload, handleDelete } = props
+    const { handleDownload, handleDelete } = props
+    const allRows = props.rows
 
     const handleClick = (url) => {
         window.open(url)
@@ -128,13 +130,19 @@ export default function AdsTableView(props) {
         setDense(event.target.checked);
     };
 
+    const handleChangeFilter = (event) => {
+        const value = event.target.value
+        const filteredRows = allRows.filter(row => row.name.toLowerCase().indexOf(value.toLowerCase()) > -1)
+        setRows(filteredRows)
+    };
+
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
                 <TableContainer>
-
+                    <FilterToolbar handleChange={handleChangeFilter} placeholder='введи название сегмента для поиска'/>
                     <Table
                         className={classes.table}
                         aria-labelledby="tableTitle"

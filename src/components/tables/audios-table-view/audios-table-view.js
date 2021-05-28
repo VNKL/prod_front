@@ -15,7 +15,7 @@ import LinkIcon from "@material-ui/icons/Link";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import {dateStrFromParam, spacedNumber} from "../../../services/api-service";
-import {useStyles, getComparator, stableSort, EnhancedTableHead} from "../table-functions";
+import {useStyles, getComparator, stableSort, EnhancedTableHead, FilterToolbar} from "../table-functions";
 
 
 function getHeadCells(needChart, needPost) {
@@ -67,8 +67,10 @@ export default function AudiosTableView(props) {
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(true);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rows, setRows] = React.useState(props.rows);
 
-    const { rows, needChart, needPost, handleDownload, handleDelete, hasCsv } = props
+    const { needChart, needPost, handleDownload, handleDelete, hasCsv } = props
+    const allRows = props.rows
 
     const headCells = getHeadCells(needChart, needPost)
 
@@ -111,13 +113,19 @@ export default function AudiosTableView(props) {
         setDense(event.target.checked);
     };
 
+    const handleChangeFilter = (event) => {
+        const value = event.target.value
+        const filteredRows = allRows.filter(row => row.title.toLowerCase().indexOf(value.toLowerCase()) > -1)
+        setRows(filteredRows)
+    };
+
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
                 <TableContainer>
-
+                    <FilterToolbar handleChange={handleChangeFilter} placeholder='введи название трека для поиска'/>
                     <Table
                         className={classes.table}
                         aria-labelledby="tableTitle"

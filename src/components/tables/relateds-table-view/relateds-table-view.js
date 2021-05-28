@@ -16,7 +16,7 @@ import PauseIcon from '@material-ui/icons/Pause';
 import Link from "@material-ui/core/Link";
 import {Link as RouterLink} from "react-router-dom";
 import {dateStrFromParam, spacedNumber} from "../../../services/api-service";
-import {useStyles, getComparator, stableSort, EnhancedTableHead} from "../table-functions";
+import {useStyles, getComparator, stableSort, EnhancedTableHead, FilterToolbar} from "../table-functions";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 
 
@@ -79,8 +79,9 @@ export default function RelatedsTableView(props) {
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [rows, setRows] = React.useState(props.rows);
 
-    const { rows } = props
+    const allRows = props.rows
     const coverSize = dense ? {width: 30, height: 30} : {width: 50, height: 50}
 
     const handleRequestSort = (event, property) => {
@@ -102,13 +103,19 @@ export default function RelatedsTableView(props) {
         setDense(event.target.checked);
     };
 
+    const handleChangeFilter = (event) => {
+        const value = event.target.value
+        const filteredRows = allRows.filter(row => row.artistName.toLowerCase().indexOf(value.toLowerCase()) > -1)
+        setRows(filteredRows)
+    };
+
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
                 <TableContainer>
-
+                    <FilterToolbar handleChange={handleChangeFilter} placeholder='введи имя артиста для поиска'/>
                     <Table
                         className={classes.table}
                         aria-labelledby="tableTitle"

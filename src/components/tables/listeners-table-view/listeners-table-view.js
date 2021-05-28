@@ -10,7 +10,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import {useStyles, getComparator, stableSort, EnhancedTableHead} from "../table-functions";
+import {useStyles, getComparator, stableSort, EnhancedTableHead, FilterToolbar} from "../table-functions";
 
 
 const headCells = [
@@ -32,8 +32,10 @@ export default function ListenersTableView(props) {
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(true);
     const [rowsPerPage, setRowsPerPage] = React.useState(25);
+    const [rows, setRows] = React.useState(props.rows);
 
-    const { rows, handleDownload, handleDelete } = props
+    const allRows = props.rows
+    const { handleDownload, handleDelete } = props
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -54,13 +56,19 @@ export default function ListenersTableView(props) {
         setDense(event.target.checked);
     };
 
+    const handleChangeFilter = (event) => {
+        const value = event.target.value
+        const filteredRows = allRows.filter(row => row.name.toLowerCase().indexOf(value.toLowerCase()) > -1)
+        setRows(filteredRows)
+    };
+
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
                 <TableContainer>
-
+                    <FilterToolbar handleChange={handleChangeFilter} placeholder='введи наименование для поиска'/>
                     <Table
                         className={classes.table}
                         aria-labelledby="tableTitle"

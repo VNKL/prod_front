@@ -5,6 +5,9 @@ import Tooltip from "@material-ui/core/Tooltip";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import {makeStyles} from "@material-ui/core/styles";
 import React from "react";
+import Toolbar from "@material-ui/core/Toolbar";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -16,11 +19,13 @@ function descendingComparator(a, b, orderBy) {
     return 0;
 }
 
+
 export function getComparator(order, orderBy) {
     return order === 'desc'
         ? (a, b) => descendingComparator(a, b, orderBy)
         : (a, b) => -descendingComparator(a, b, orderBy);
 }
+
 
 export function stableSort(array, comparator) {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -31,6 +36,7 @@ export function stableSort(array, comparator) {
     });
     return stabilizedThis.map((el) => el[0]);
 }
+
 
 export function EnhancedTableHead(props) {
     const { classes, order, orderBy, onRequestSort, headCells } = props;
@@ -68,6 +74,29 @@ export function EnhancedTableHead(props) {
     );
 }
 
+
+export function FilterToolbar(props) {
+    const { handleChange, placeholder } = props
+    return (
+        <Toolbar>
+            <Grid container >
+                <Grid item xs={3}>
+                    <TextField
+                        fullWidth
+                        id="filterField"
+                        name='filterField'
+                        autoComplete="post-url"
+                        onChange={handleChange}
+                        placeholder={placeholder}
+                        InputLabelProps={{shrink: true}}
+                    />
+                </Grid>
+            </Grid>
+        </Toolbar>
+    );
+}
+
+
 export const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -91,4 +120,3 @@ export const useStyles = makeStyles((theme) => ({
         width: 1,
     },
 }));
-

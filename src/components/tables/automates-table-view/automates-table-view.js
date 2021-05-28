@@ -18,7 +18,7 @@ import {Link as RouterLink} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import ErrorIcon from "@material-ui/icons/Error";
 import {dateStrFromParam, spacedNumber} from "../../../services/api-service";
-import {useStyles, getComparator, stableSort, EnhancedTableHead} from "../table-functions";
+import {useStyles, getComparator, stableSort, EnhancedTableHead, FilterToolbar} from "../table-functions";
 
 
 const headCells = [
@@ -95,8 +95,10 @@ export default function AutomatesTableView(props) {
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rows, setRows] = React.useState(props.rows);
 
-    const { rows, handleStop } = props
+    const { handleStop } = props
+    const allRows = props.rows
     const coverSize = dense ? {width: 30, height: 30} : {width: 50, height: 50}
 
     const handleRequestSort = (event, property) => {
@@ -118,13 +120,19 @@ export default function AutomatesTableView(props) {
         setDense(event.target.checked);
     };
 
+    const handleChangeFilter = (event) => {
+        const value = event.target.value
+        const filteredRows = allRows.filter(row => row.campaign.toLowerCase().indexOf(value.toLowerCase()) > -1)
+        setRows(filteredRows)
+    };
+
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
                 <TableContainer>
-
+                    <FilterToolbar handleChange={handleChangeFilter} placeholder='введи название кампании для поиска'/>
                     <Table
                         className={classes.table}
                         aria-labelledby="tableTitle"

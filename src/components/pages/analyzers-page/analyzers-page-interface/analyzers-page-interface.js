@@ -8,7 +8,7 @@ import AnalyzersTableView from "../../../tables/analyzers-table-view";
 export default class AnalyzersPageInterface extends React.Component {
 
     state = {
-        analyzers: [],
+        analyzers: null,
         loading: true,
         artistUrl: '',
         artistUrlError: false
@@ -31,7 +31,7 @@ export default class AnalyzersPageInterface extends React.Component {
 
     startAnal = (params) => {
         this.api.createAnalyzer(params.artistUrl)
-        this.setState({artistUrl: params.artistUrl}, () => {
+        this.setState({artistUrl: params.artistUrl, loading: true}, () => {
             if (this.state.artistUrl === '') {
                 this.setState({artistUrlError: true})
             }
@@ -40,7 +40,7 @@ export default class AnalyzersPageInterface extends React.Component {
 
 
     render() {
-        const { analyzers } = this.state
+        const { analyzers, loading } = this.state
 
         return (
             <Grid container spacing={3}>
@@ -49,7 +49,7 @@ export default class AnalyzersPageInterface extends React.Component {
                 </Grid>
 
                 <Grid item xs={12} >
-                    <AnalyzersTableView rows={analyzers}/>
+                    {!loading ? <AnalyzersTableView rows={analyzers}/> : null}
                 </Grid>
 
             </Grid>
