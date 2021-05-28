@@ -30,12 +30,13 @@ const headCells = [
     { id: 'spent', align: 'right',  label: 'Расход', tooltip: 'Потраченная сумма в рублях' },
     { id: 'reach', align: 'right',  label: 'Показы', tooltip: 'Показы объявлений' },
     { id: 'cpm', align: 'right',  label: 'CPM', tooltip: 'Стоимость тысячи показов в рублях' },
-    { id: 'listens', align: 'right',  label: 'Прослушивания', tooltip: 'Прослушивания на плейлистах (не равно стримы)' },
+    { id: 'listens', align: 'right',  label: 'Прослуш.', tooltip: 'Прослушивания на плейлистах (не равно стримы)' },
     { id: 'cpl', align: 'right',  label: 'CPL', tooltip: 'Cost Per Listen - стоимость одного прослушивания в рублях' },
     { id: 'ltr', align: 'right',  label: 'LTR', tooltip: 'Listen Through Rate - конверсия из показов в прослушивания' },
-    { id: 'saves', align: 'right',  label: 'Добавления', tooltip: 'Сохранения аудио и плейлистов из объявлений в аудиозаписях пользователей' },
+    { id: 'saves', align: 'right',  label: 'Добавл.', tooltip: 'Сохранения аудио и плейлистов из объявлений в аудиозаписях пользователей' },
     { id: 'cps', align: 'right',  label: 'CPS', tooltip: 'Cost Per Save - стоимость одного сохранения в рублях' },
     { id: 'str', align: 'right',  label: 'STR', tooltip: 'Save Through Rate - конверсия из показов в добавления' },
+    { id: 'cplCpsRate', align: 'right',  label: 'CPL/CPS', tooltip: 'Соотношение стоимости прослушивания к стоимости добавления' },
     { id: 'audienceCount', align: 'right',  label: 'Аудитория', tooltip: 'Сумма размеров аудиторий всех сегментов кампании' },
     { id: 'date', align: 'right',  label: 'Дата', tooltip: 'Дата создания кампании' },
 ]
@@ -176,6 +177,7 @@ export default function CampaignsTableView(props) {
                                             <TableCell align="right">{spacedNumber(row.saves)}</TableCell>
                                             <TableCell align="right">{row.cps}</TableCell>
                                             <TableCell align="right">{`${row.str} %`}</TableCell>
+                                            <TableCell align="right">{ row.cplCpsRate }</TableCell>
                                             <TableCell align="right">{spacedNumber(row.audienceCount)}</TableCell>
                                             <TableCell align="right">{dateStrFromParam(row.date)}</TableCell>
 
