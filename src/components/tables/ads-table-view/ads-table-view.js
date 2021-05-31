@@ -36,7 +36,7 @@ const headCells = [
     { id: 'saves', align: 'right',  label: 'Добавл.', tooltip: 'Сохранения аудио и плейлистов из объявлений в аудиозаписях пользователей' },
     { id: 'cps', align: 'right',  label: 'CPS', tooltip: 'Cost Per Save - стоимость одного сохранения в рублях' },
     { id: 'str', align: 'right',  label: 'STR', tooltip: 'Save Through Rate - конверсия из охвата в добавления' },
-    { id: 'cplCpsRate', align: 'right',  label: 'CPS/CPL', tooltip: 'Соотношение стоимостей добавления и прослушивания (сколько людей, нажавших на плей, добавили трек себе)' },
+    { id: 'cplCpsRate', align: 'right',  label: 'CPL/CPS', tooltip: 'Соотношение стоимостей добавления и прослушивания (сколько людей, нажавших на плей, добавили трек себе)' },
     { id: 'audienceCount', align: 'right',  label: 'Аудитория', tooltip: 'Размер аудитории сегмента с учетом его настроек' },
     { id: 'adUrl', align: 'right',  label: 'Объявление', tooltip: 'Ссылка на объявление в рекламном кабинете ВК' },
     { id: 'postUrl', align: 'right',  label: 'Пост', tooltip: 'Ссылка на пост в ВК' },
