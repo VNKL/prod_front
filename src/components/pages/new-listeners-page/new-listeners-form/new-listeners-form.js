@@ -40,12 +40,12 @@ const NewListenersForm = (props) => {
         let userIdsError = false
 
         let userIdsArray = state.userIds.split('\n').filter(item => !isNaN(parseInt(item)))
-        if (userIdsArray.length > 5000) {userIdsArray = userIdsArray.slice(0, 5000)}
+        if (userIdsArray.length > 500) {userIdsArray = userIdsArray.slice(0, 500)}
 
         if (!state.ticketName) {ticketNameError = true}
         if (!state.ticketType) {ticketTypeError = true}
         if (isNaN(parseInt(state.nLast)) || parseInt(state.nLast) > 100) {nLastError = true}
-        if (userIdsArray.length === 0 || userIdsArray.length > 5000) {userIdsError = true}
+        if (userIdsArray.length === 0 || userIdsArray.length > 500) {userIdsError = true}
 
         setState({...state, ticketNameError, ticketTypeError, nLastError, userIdsError})
         startListeners(ticketNameError, ticketTypeError, nLastError, userIdsError, userIdsArray)
