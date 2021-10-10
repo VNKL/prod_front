@@ -47,7 +47,7 @@ const MenuProps = {
 const NewCampaignFormView = (props) => {
     const {state, cabinets, groups, changeCabinet, startCampaign,
            handleChange, changeRelatedArtists, changeMusicFilter, changeBoomFilter,
-           handleRetarget, handleRetargetDelete} = props
+           handleRetarget, handleRetargetDelete, handleRetargetExclude, handleRetargetExcludeDelete} = props
 
     const classes = useStyles();
 
@@ -343,6 +343,96 @@ const NewCampaignFormView = (props) => {
                     helperText="Пустые сегменты"
                     InputLabelProps={{shrink: true}}
                 />
+            </Grid>
+
+
+            <Grid item xs={6} sm={3} >
+                <FormControl fullWidth>
+                    <InputLabel id="mutiple-chip-label">Ретаргетинг</InputLabel>
+                    <Select
+                        labelId="mutiple-chip-label"
+                        id="mutiple-chip"
+                        multiple
+                        value={state.retargetExclude}
+                        onChange={handleRetargetExclude}
+                        input={<Input id="select-multiple-chip" />}
+                        renderValue={(selected) => (
+                            <div className={classes.chips}>
+                                {selected.map((value, index) => (
+                                    <Chip key={index} label={value} className={classes.chip}
+                                          onDelete={() => handleRetargetExcludeDelete(value)}
+                                          onMouseDown={(event) => {
+                                              event.stopPropagation();
+                                          }}/>
+                                ))}
+                            </div>
+                        )}
+                        MenuProps={MenuProps}
+                    >
+                        {state.retarget.map((retarget, index) => (
+                            <MenuItem key={index}
+                                      value={retarget.retargetName}
+                            >
+                                {`${retarget.retargetName} | ${retarget.audienceCount}`}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                <FormHelperText>Исключение аудиторий</FormHelperText>
+                </FormControl>
+            </Grid>
+
+            <Grid item xs={6} sm={3}>
+                <FormControl fullWidth>
+                    <InputLabel htmlFor="age-native-helper">Видели объявления</InputLabel>
+                    <NativeSelect
+                        error={state.cabinetError}
+                        id='saveSeen'
+                        name='saveSeen'
+                        value={state.saveSeen}
+                        onChange={handleChange}
+                    >
+                        <option aria-label="None" value="" />
+                        {state.retarget.map((retarget, index) => <option value={retarget.retargetName}
+                                                                                     key={index}>{`${retarget.retargetName} | ${retarget.audienceCount}`}</option>)}
+                    </NativeSelect>
+                    <FormHelperText>Сохранение аудиторий</FormHelperText>
+                </FormControl>
+            </Grid>
+
+            <Grid item xs={6} sm={3}>
+                <FormControl fullWidth>
+                    <InputLabel htmlFor="age-native-helper">Позитивные реакции</InputLabel>
+                    <NativeSelect
+                        error={state.cabinetError}
+                        id='savePositive'
+                        name='savePositive'
+                        value={state.savePositive}
+                        onChange={handleChange}
+                    >
+                        <option aria-label="None" value="" />
+                        {state.retarget.map((retarget, index) => <option value={retarget.retargetName}
+                                                                         key={index}>{`${retarget.retargetName} | ${retarget.audienceCount}`}</option>)}
+                    </NativeSelect>
+                    <FormHelperText>Сохранение аудиторий</FormHelperText>
+                </FormControl>
+            </Grid>
+
+            <Grid item xs={6} sm={3}>
+                <FormControl fullWidth>
+                    <InputLabel htmlFor="age-native-helper">Негативные реакции</InputLabel>
+                    <NativeSelect
+                        error={state.cabinetError}
+                        id='saveNegative'
+                        name='saveNegative'
+                        value={state.saveNegative}
+                        onChange={handleChange}
+                    >
+                        <option aria-label="None" value="" />
+                        {state.retarget.map((retarget, index) => <option value={retarget.retargetName}
+                                                                         key={index}>{`${retarget.retargetName} | ${retarget.audienceCount}`}</option>)}
+                    </NativeSelect>
+                    <FormHelperText>Сохранение аудиторий</FormHelperText>
+                </FormControl>
             </Grid>
 
 

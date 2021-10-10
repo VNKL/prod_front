@@ -72,7 +72,11 @@ export default class NewCampaignForm extends React.Component {
         groupsActive: '',
         musicians: '',
         count: 0,
-        callbackField: undefined
+        callbackField: undefined,
+        retargetExclude: [],
+        saveSeen: undefined,
+        savePositive: undefined,
+        saveNegative: undefined
     }
 
     handleChange = (event) => {
@@ -190,6 +194,16 @@ export default class NewCampaignForm extends React.Component {
                 ...this.state.retargetNames.slice(idx + 1)]}, () => {this.calculateSegmentsCount()})
     };
 
+    handleRetargetExclude = (event) => {
+        this.setState({retargetExclude: event.target.value}, () => {this.calculateSegmentsCount()})
+    };
+
+    handleRetargetExcludeDelete = (retargetName) => {
+        const idx = this.state.retargetExclude.indexOf(retargetName)
+        this.setState({retargetExclude: [...this.state.retargetExclude.slice(0, idx),
+                ...this.state.retargetExclude.slice(idx + 1)]}, () => {this.calculateSegmentsCount()})
+    }
+
     loadRetarget = (param) => {
         this.api.getRetarget(param).then(this.onRetargetLoaded)
     }
@@ -284,6 +298,8 @@ export default class NewCampaignForm extends React.Component {
                                     handleRetarget={this.handleRetarget}
                                     handleRetargetDelete={this.handleRetargetDelete}
                                     startCampaign={this.checkForm}
-        />
+                                    handleRetargetExclude={this.handleRetargetExclude}
+                                    handleRetargetExcludeDelete={this.handleRetargetExcludeDelete}
+    />
     }
 }

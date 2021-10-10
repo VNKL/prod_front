@@ -474,6 +474,8 @@ export default class ApiService {
     }
 
     _refactor_camp_params = (params) => {
+        console.log(params)
+
         let sex = params.sex
         if (params.sex === 'all') {
             sex = ''
@@ -493,10 +495,20 @@ export default class ApiService {
             groups: params.groupsActive,
             related: params.relatedArtists,
             retarget: params.retargetNames.join('\n'),
-            empty_ads: params.emptyAds
+            retarget_exclude: params.retargetExclude.join('\n'),
+            empty_ads: params.emptyAds,
         }
         if (typeof params.client !== 'undefined') {
             refactored_params.client_id = params.client
+        }
+        if (typeof params.saveSeen !== 'undefined') {
+            refactored_params.retarget_save_seen = params.saveSeen
+        }
+        if (typeof params.savePositive !== 'undefined') {
+            refactored_params.retarget_save_positive = params.savePositive
+        }
+        if (typeof params.saveNegative !== 'undefined') {
+            refactored_params.retarget_save_negative = params.saveNegative
         }
         return refactored_params
     }
