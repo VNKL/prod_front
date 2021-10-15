@@ -437,6 +437,13 @@ export default class ApiService {
         }
     }
 
+    async renameCampaign(campaignId, title) {
+        const campaign = await this._getResponse('ads.renameCampaign', {id: campaignId, title: title})
+        if (typeof campaign !== "undefined") {
+            return this._unpackCampaign(campaign)
+        }
+    }
+
     async stopAutomate(automateId) {
         await this._getResponse('ads.stopAutomate', {id: automateId})
     }

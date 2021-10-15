@@ -22,7 +22,8 @@ export default class AdsPage extends React.Component {
         campaign: null,
         hasData: false,
         updateSegmentsIsStarting: false,
-        doRedirect: false
+        doRedirect: false,
+        campRename: undefined,
     }
     api = new ApiService()
 
@@ -86,6 +87,20 @@ export default class AdsPage extends React.Component {
         this.setState({updateSegmentsIsStarting: false});
     };
 
+    handleChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value
+        this.setState({[name]: value}, () => {if(this.state.campRename) {}})
+    }
+
+    renameCampaign = () => {
+        const campRename = this.state.campRename
+        if (campRename !== undefined) {
+            this.setState({campRename: undefined}, () => {if(this.state.campRename) {}})
+            this.api.renameCampaign(this.campaignId, campRename).then(this.onAdsLoaded)
+        }
+    }
+
     render() {
 
         const {loading, hasData, ads, campaign} = this.state
@@ -93,7 +108,9 @@ export default class AdsPage extends React.Component {
                                             name={campaign.name}
                                             updateStats={this.updateStats}
                                             updateSegmentSizes={this.updateSegmentSizes}
-                                            openCampaignInCabinet={this.openCampaignInCabinet}/> : null
+                                            openCampaignInCabinet={this.openCampaignInCabinet}
+                                            handleChange={this.handleChange}
+                                            renameCampaign={this.renameCampaign} /> : null
         const table = hasData ? <AdsTableView rows={ads} handleDownload={this.handleDownload} handleDelete={this.handleDelete}/> : null
         const skeleton = loading ? <AdsPageSkeleton /> : null
         const error = hasData ? null : skeleton ? null : <h2>Ошибка с получением данных</h2>
