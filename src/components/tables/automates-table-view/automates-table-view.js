@@ -36,6 +36,7 @@ const headCells = [
     { id: 'spent', align: 'right',  label: 'Потрачено', tooltip: 'Потраченная сумма в рублях' },
     { id: 'reach', align: 'right',  label: 'Показы', tooltip: 'Показы объявлений' },
     { id: 'cpm', align: 'right',  label: 'CPM', tooltip: 'Стоимость тысячи показов' },
+    { id: 'mCPM', align: 'right', label: 'mCPM', tooltip: 'Максимально допустимый СРМ на объявлениях' },
     { id: 'createDate', align: 'right',  label: 'Дата создания', tooltip: 'Дата создания автоматизации' },
     { id: 'finishDate', align: 'right',  label: 'Дата завершения', tooltip: 'Дата завершения автоматизации' },
 ]
@@ -186,6 +187,7 @@ export default function AutomatesTableView(props) {
                                             <TableCell align="right">{spacedNumber(row.spent)}</TableCell>
                                             <TableCell align="right">{spacedNumber(row.reach)}</TableCell>
                                             <TableCell align="right">{row.cpm}</TableCell>
+                                            <TableCell align="right">{row.maxCPM}</TableCell>
                                             <TableCell align="right">{dateStrFromParam(row.createDate)}</TableCell>
                                             <TableCell align="right">{dateStrFromParam(row.finishDate)}</TableCell>
 

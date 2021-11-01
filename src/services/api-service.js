@@ -465,6 +465,7 @@ export default class ApiService {
             campaign_id: params.campaign,
             target_cost: params.targetCost,
             type: params.type,
+            max_cpm: params.maxCPM,
         }
         if (params.startTomorrow) {
             refactored_params.start = 1
@@ -648,6 +649,7 @@ export default class ApiService {
                 stopValue: _stopValue_str_from_int(automate.finish),
                 status: automate.status,
                 type: _type_str_from_type_int(automate.type),
+                maxCPM: automate.max_cpm,
                 count: _count_from_automate(automate),
                 vtr: `${(_VTR_from_automate(automate) * 100).toFixed(2)} %` ,
                 targetValue: automate.target_cost,

@@ -31,7 +31,8 @@ const NewAutomateForm = (props) => {
         typeError: false,
         startTomorrow: false,
         finishAutomatically: false,
-
+        maxCPM: 120,
+        maxCPMerror: false,
     });
 
     const { campaigns } = props
@@ -45,18 +46,19 @@ const NewAutomateForm = (props) => {
     };
 
     const checkForm = () => {
-        let [campaignError, targetCostError, typeError] = [false, false, false]
+        let [campaignError, targetCostError, typeError, maxCPMerror] = [false, false, false, false]
 
         if (!state.campaign) {campaignError = true}
         if (!state.targetCost || isNaN(state.targetCost)) {targetCostError = true}
         if (!state.type || isNaN(state.type)) {typeError = true}
+        if (!state.maxCPM || isNaN(state.maxCPM) || state.maxCPM < 30 || state.maxCPM > 1000) {maxCPMerror = true}
 
-        setState({...state, campaignError, targetCostError, typeError})
-        startAutomate(campaignError, targetCostError, typeError)
+        setState({...state, campaignError, targetCostError, typeError, maxCPMerror})
+        startAutomate(campaignError, targetCostError, typeError, maxCPMerror)
     }
 
-    const startAutomate = (campaignError, targetCostError, typeError) => {
-        if (!campaignError && !targetCostError && !typeError) {
+    const startAutomate = (campaignError, targetCostError, typeError, maxCPMerror) => {
+        if (!campaignError && !targetCostError && !typeError && !maxCPMerror) {
             props.startAutomate(state)
         }
     }
@@ -147,6 +149,28 @@ const NewAutomateForm = (props) => {
                 />
             </Grid>
 
+            <Grid item xs={6} />
+
+
+            <Grid item xs={3} sm={3}>
+                <TextField
+                    error={state.maxCPMerror}
+                    value={state.maxCPM}
+                    id="maxCPM"
+                    name='maxCPM'
+                    label="Максимальный СРМ"
+                    fullWidth
+                    type='number'
+                    autoComplete="maxCPM"
+                    onChange={handleChange}
+                    helperText="Обязательно"
+                />
+            </Grid>
+
+            <Grid item xs={9} />
+
+
+
             <Grid item xs={12} sm={12} >
                 <FormControl component="fieldset" fullWidth>
                     <FormControlLabel
@@ -173,6 +197,7 @@ const NewAutomateForm = (props) => {
                 </FormControl>
             </Grid>
 
+
             <Grid item xs={6} sm={6}>
                 <Button variant='contained'
                         color='secondary'
@@ -182,7 +207,6 @@ const NewAutomateForm = (props) => {
                     Запустить
                 </Button>
             </Grid>
-
 
         </Grid>
 
