@@ -102,6 +102,11 @@ const App = () => {
         api.bindVk(user.username)
     }
 
+    const onUnbindVk = () => {
+        const api = new ApiService()
+        api.unbindVk().then(() => {window.location.reload()})
+    }
+
     let data = (
         <Switch>
             <Route path='/login' render={() => <LoginPage changeLoggedInStatus={changeLoggedInStatus}/>}/>
@@ -111,7 +116,7 @@ const App = () => {
 
     if (isLoggedIn) {
         data = (
-            <NavigationPanel leftPanelListItems={leftPanelListItems} user={user} onBindVk={onBindVk}>
+            <NavigationPanel leftPanelListItems={leftPanelListItems} user={user} onBindVk={onBindVk} onUnbindVk={onUnbindVk}>
                 <Pages/>
             </NavigationPanel>
         )

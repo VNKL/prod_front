@@ -30,7 +30,7 @@ const NavigationPanel = (props) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 
-    const {leftPanelListItems, user, onBindVk} = props
+    const {leftPanelListItems, user, onBindVk, onUnbindVk} = props
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -44,7 +44,7 @@ const NavigationPanel = (props) => {
 
             <CssBaseline />
 
-            <TopPanel open={open} handleDrawerOpen={handleDrawerOpen} user={user} onBindVk={onBindVk}/>
+            <TopPanel open={open} handleDrawerOpen={handleDrawerOpen} user={user} onBindVk={onBindVk} onUnbindVk={onUnbindVk}/>
             <LeftPanel open={open} handleDrawerClose={handleDrawerClose} items={leftPanelListItems}/>
 
             <main className={classes.content}>

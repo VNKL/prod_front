@@ -5,11 +5,11 @@ import Toolbar from "@material-ui/core/Toolbar";
 
 const UserBlock = (props) => {
 
-    const {user, onBindVk} = props
+    const {user, onBindVk, onUnbindVk} = props
 
     return (
         <Toolbar>
-            <UserMenu user={user} onBindVk={onBindVk}/>
+            <UserMenu user={user} onBindVk={onBindVk} onUnbindVk={onUnbindVk}/>
         </Toolbar>
     )
 

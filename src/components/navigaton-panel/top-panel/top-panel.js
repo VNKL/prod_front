@@ -88,7 +88,7 @@ const TopPanel = (props) => {
 
     const classes = useStyles();
     const location = useLocation()
-    const {open, handleDrawerOpen, user, onBindVk} = props
+    const {open, handleDrawerOpen, user, onBindVk, onUnbindVk} = props
 
     return (
         <AppBar
@@ -114,7 +114,7 @@ const TopPanel = (props) => {
                 </Typography>
 
                 <div className={classes.avatar}>
-                    <UserBlock user={user} onBindVk={onBindVk} />
+                    <UserBlock user={user} onBindVk={onBindVk} onUnbindVk={onUnbindVk}/>
                 </div>
 
             </Toolbar>

@@ -23,9 +23,10 @@ const UserMenu = (props) => {
 
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const {user, onBindVk} = props
+    const {user, onBindVk, onUnbindVk} = props
 
-    const bind_vk = !user.hasToken? <MenuItem onClick={onBindVk}>Привязать ВК</MenuItem> : null
+    const bind_vk = !user.hasToken ? <MenuItem onClick={onBindVk}>Привязать ВК</MenuItem> : null
+    const unbind_vk = user.hasToken ? <MenuItem onClick={onUnbindVk}>Отвязать ВК</MenuItem> : null
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -55,6 +56,7 @@ const UserMenu = (props) => {
                 onClose={handleClose}
             >
                 {bind_vk}
+                {unbind_vk}
                 <MenuItem onClick={logOut}>Выйти</MenuItem>
             </Menu>
 

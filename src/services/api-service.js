@@ -213,6 +213,13 @@ export default class ApiService {
         window.location.replace(url)
     }
 
+    async unbindVk() {
+        const user = await this._getResponse('users.unbindVk')
+        if (typeof user !== 'undefined') {
+            return this._unpackUser(user)
+        }
+    }
+
     async chartsSearch(searchParams) {
         const params = this._refactor_charts_search_params(searchParams)
         const result = await this._getResponse('charts.search', params)
