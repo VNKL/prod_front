@@ -111,6 +111,22 @@ function roundToTwo(num) {
     return +(Math.round(num + "e+2")  + "e-2");
 }
 
+function calculateStreams(saves, rate) {
+    let rateShare = rate / 100
+    if (rate === 0) {
+        return saves
+    } else if (rateShare >= 0.4) {
+        return saves * 2
+    } else {
+        return Math.round(saves * 2 * 0.4 / rateShare)
+    }
+}
+
+function calculateCampAverageStreams(ads) {
+    let streamsArray = ads.map((ad) => ad.streams)
+    return streamsArray.reduce((a,b) => a + b)
+}
+
 function _get_listens_from_post(post) {
     let listensSum = 0
     post.playlists.forEach((item) => {
@@ -584,6 +600,7 @@ export default class ApiService {
 
     _unpackAds = (ads) => {
         return ads.map((ad) => {
+            let savesListensRate = ad.listens ? roundToTwo(ad.saves / ad.listens * 100) : 0
             return {
                 approved: ad.approved,
                 status: ad.status,
@@ -600,7 +617,8 @@ export default class ApiService {
                 adUrl: `https://vk.com/ads?act=office&union_id=${ad.ad_id}`,
                 postUrl: `https://vk.com/wall-${ad.post_owner}_${ad.post_id}`,
                 audienceCount: ad.audience_count ? ad.audience_count : '—',
-                cplCpsRate: ad.cps ? roundToTwo(ad.cpl / ad.cps) : 0
+                savesListensRate: savesListensRate,
+                streams: calculateStreams(ad.saves, savesListensRate)
             }
         })
     }
@@ -692,6 +710,7 @@ export default class ApiService {
     }
 
     _unpackCampaign = (campaign) => {
+        const adsStat = this._unpackAds(campaign.ads)
         let campStat = {
             campaignId: campaign.campaign_id,
             name: `${campaign.artist} - ${campaign.title}`,
@@ -709,7 +728,6 @@ export default class ApiService {
             updateDate: campaign.update_date,
             audienceCount: campaign.audience_count ? campaign.audience_count : '—'
         }
-        const adsStat = this._unpackAds(campaign.ads)
         const campAverage = {
             approved: null,
             status: null,
@@ -725,9 +743,10 @@ export default class ApiService {
             str: roundToTwo(campaign.sr * 100),
             adUrl: null,
             postUrl: null,
-            audienceCount: campaign.audience_count ? campaign.audience_count : '—'
+            audienceCount: campaign.audience_count ? campaign.audience_count : '—',
+            savesListensRate: campaign.listens ? roundToTwo(campaign.saves / campaign.listens * 100) : 0,
+            streams: calculateCampAverageStreams(adsStat)
         }
-        campAverage.cplCpsRate = campAverage.cps ? roundToTwo(campAverage.cpl / campAverage.cps) : 0
         adsStat.unshift(campAverage)
         campStat.ads = adsStat
         return campStat
@@ -735,6 +754,7 @@ export default class ApiService {
 
     _unpackCampaigns = (campaigns) => {
         return campaigns.map((campaign) => {
+            let savesListensRate = campaign.listens ? roundToTwo(campaign.saves / campaign.listens * 100) : 0
             return {
                 campaignId: campaign.campaign_id,
                 status: campaign.status,
@@ -753,7 +773,8 @@ export default class ApiService {
                 saves: campaign.saves,
                 cps: roundToTwo(campaign.cps),
                 str: roundToTwo(campaign.sr * 100),
-                cplCpsRate: campaign.cps ? roundToTwo(campaign.cpl / campaign.cps) : 0,
+                savesListensRate: savesListensRate,
+                streams: calculateStreams(campaign.saves, savesListensRate),
                 cover: campaign.cover_url,
                 date: campaign.create_date,
                 dateFormatted: new Date(campaign.create_date).toLocaleDateString(),
