@@ -183,7 +183,7 @@ export default function AdsTableView(props) {
                                             <TableCell align="right">{row.cps}</TableCell>
                                             <TableCell align="right">{`${row.str} %`}</TableCell>
                                             <TableCell align="right">{ `${row.savesListensRate} %` }</TableCell>
-                                            <TableCell align="right">{ row.streams }</TableCell>
+                                            <TableCell align="right">{ spacedNumber(row.streams) }</TableCell>
                                             <TableCell align="right">{spacedNumber(row.audienceCount)}</TableCell>
 
                                             {

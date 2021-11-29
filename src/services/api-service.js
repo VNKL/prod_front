@@ -112,13 +112,12 @@ function roundToTwo(num) {
 }
 
 function calculateStreams(saves, rate) {
-    let rateShare = rate / 100
     if (rate === 0) {
         return saves
-    } else if (rateShare >= 0.4) {
+    } else if (rate >= 40) {
         return saves * 2
     } else {
-        return Math.round(saves * 2 * 0.4 / rateShare)
+        return Math.round(saves * 2 * rate / 40)
     }
 }
 
