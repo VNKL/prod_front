@@ -117,7 +117,7 @@ function calculateStreams(saves, rate) {
     } else if (rate >= 40) {
         return saves * 2
     } else {
-        return Math.round(saves * 2 * rate / 40)
+        return Math.round(saves * (1 + (rate / 40)))
     }
 }
 
