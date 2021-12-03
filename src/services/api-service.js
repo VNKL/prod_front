@@ -599,7 +599,7 @@ export default class ApiService {
 
     _unpackAds = (ads) => {
         return ads.map((ad) => {
-            let savesListensRate = ad.listens ? roundToTwo(ad.saves / ad.listens * 100) : 0
+            let savesListensRate = ad.listens ? Math.round(ad.saves / ad.listens * 100) : 0
             return {
                 approved: ad.approved,
                 status: ad.status,
@@ -744,7 +744,7 @@ export default class ApiService {
             postUrl: null,
             audienceCount: campaign.audience_count ? campaign.audience_count : '—',
         }
-        campAverage.savesListensRate = campaign.listens ? roundToTwo(campaign.saves / campaign.listens * 100) : 0
+        campAverage.savesListensRate = campaign.listens ? Math.round(campaign.saves / campaign.listens * 100) : 0
         campAverage.streams = calculateCampAverageStreams(adsStat)
         adsStat.unshift(campAverage)
         campStat.ads = adsStat
