@@ -123,7 +123,7 @@ function calculateStreams(saves, rate) {
 
 function calculateCampAverageStreams(ads) {
     let streamsArray = ads.map((ad) => ad.streams ? ad.streams : 0)
-    return streamsArray.reduce((a,b) => a + b)
+    return streamsArray.length === 0 ? 0 : streamsArray.reduce((a,b) => a + b)
 }
 
 function _get_listens_from_post(post) {
@@ -169,8 +169,8 @@ export function spacedNumber(x) {
 
 
 export default class ApiService {
-    _apiBaseUrl = 'http://77.223.106.195:70/api/'
-    // _apiBaseUrl = 'http://127.0.0.1:8000/api/'
+    // _apiBaseUrl = 'http://77.223.106.195:70/api/'
+    _apiBaseUrl = 'http://127.0.0.1:8000/api/'
     _vkTokenUrl = `https://oauth.vk.com/authorize?client_id=7669131&display=page&redirect_uri=${this._apiBaseUrl}users.bindVk&scope=360448&response_type=code&v=5.126`
 
     async _getResponse(method, params) {
@@ -727,7 +727,7 @@ export default class ApiService {
             updateDate: campaign.update_date,
             audienceCount: campaign.audience_count ? campaign.audience_count : '—'
         }
-        const campAverage = {
+        let campAverage = {
             approved: null,
             status: null,
             name: '* КАМПАНИЯ В ЦЕЛОМ *',
@@ -743,9 +743,9 @@ export default class ApiService {
             adUrl: null,
             postUrl: null,
             audienceCount: campaign.audience_count ? campaign.audience_count : '—',
-            savesListensRate: campaign.listens ? roundToTwo(campaign.saves / campaign.listens * 100) : 0,
-            streams: calculateCampAverageStreams(adsStat)
         }
+        campAverage.savesListensRate = campaign.listens ? roundToTwo(campaign.saves / campaign.listens * 100) : 0
+        campAverage.streams = calculateCampAverageStreams(adsStat)
         adsStat.unshift(campAverage)
         campStat.ads = adsStat
         return campStat
