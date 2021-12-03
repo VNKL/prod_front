@@ -122,7 +122,7 @@ function calculateStreams(saves, rate) {
 }
 
 function calculateCampAverageStreams(ads) {
-    let streamsArray = ads.map((ad) => ad.streams)
+    let streamsArray = ads.map((ad) => ad.streams ? ad.streams : 0)
     return streamsArray.reduce((a,b) => a + b)
 }
 
